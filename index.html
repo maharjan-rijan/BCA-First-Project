@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <link rel="stylesheet" href="htpps://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.main.css"/>
+    <link rel="stylesheet" href="Css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="card">
+        <div class="title" style="display: inline-flex;">
+            <h1 style="margin-right: 12rem;">Todo List</h1>
+            <div class="navbar">
+                <div class="dropdown">
+                  <button class="dropbtn">Profile</button>
+                  <div class="dropdown-content">
+                    <a href="#">Change Password</a>
+                    <a href="#">Logout</a>
+                  </div>
+                </div> 
+              </div>
+        </div></div><hr style="margin-top: 10px;">
+        <div class="add-todo">
+        <input type="text" placeholder="Task" style="width: 350px; height:30px; border-radius: 5px;">
+        <a href="#"><button class="add">Add</button></a></div>
+        <div class="wrapper-list">
+            <input type="text" placeholder="Search" style="width: 350px; height:30px; border-radius: 5px;">
+            <a href="#"><button class="search">Search</button></a>
+        <hr>
+        <table style="width: 100%">
+            <thead>
+              <tr>
+                <th>Todo item</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Todo Name 1</td>
+                  <td>Completed</td>
+                  <td>In progress</td>
+                <td>
+                    <div style="display: inline-block !important;">
+                        <ul type="none" style="display: inline-flex;">
+                         <li style="margin-right: 5px;"><a href="#"><button type="submit" style="padding: 10px;">Delete</button></a></li>
+                         <li style="margin-left: 5px;"><a href="#"><button type="submit" style="padding: 10px;">Finished</button></a></li>
+                        </ul>     
+                     </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Todo Name 1</td>
+                  <td>Completed</td>
+                  <td>In progress</td>
+                <td>
+                    <div style="display: inline-block !important;">
+                        <ul type="none" style="display: inline-flex;">
+                         <li style="margin-right: 5px;"><a href="#"><button type="submit" style="padding: 10px; background-color: red;">Delete</button></a></li>
+                         <li style="margin-left: 5px;"><a href="#"><button type="submit" style="padding: 10px;  background-color: rgb(0, 255, 51);">Finished</button></a></li>
+                        </ul>     
+                     </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Todo Name 1</td>
+                  <td>Completed</td>
+                  <td>In progress</td>
+                <td>
+                    <div style="display: inline-block !important;">
+                   <ul type="none" style="display: inline-flex;">
+                    <li style="margin-right: 5px;"><a href="#"><button type="submit" style="padding: 10px;">Delete</button></a></li>
+                    <li style="margin-left: 5px;"><a href="#"><button type="submit" style="padding: 10px;">Finished</button></a></li>
+                   </ul>     
+                </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</body>
+</html>

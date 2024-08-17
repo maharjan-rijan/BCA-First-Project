@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    background: #dfe9f5;
+}
+.wrapper{
+    width: 50%;
+    padding: 2rem 1rem;
+    margin: 50px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgb(0, 0, 0, 0.1);
+}
+.wrapper .title #profile{
+    background-color: rgb(183, 255, 255);
+    font-weight: bold;
+    width: fit-content;
+    text-align: center;
+    border-radius: 10px;
+}
+.wrapper .title #profile option{
+    font-weight: bold;
+    width: fit-content;
+    text-align: center;
+    border-radius: 10px;
+}
+.wrapper-list{
+    width: 100%;
+    padding: 10px 1rem;
+    margin: 50px auto;
+    background-color: #d0d0d0;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgb(0, 0, 0, 0.1);
+}
+.wrapper-list .search{
+    margin-bottom: 10px; 
+    justify-content: start; 
+    padding-left: 10px;
+    padding-right: 10px;
+    width: max-content;
+    color: rgb(255, 255, 255);
+}
+
+h1{
+    font-size: 2rem;
+    color: black;
+}
+form input{
+    width: 100%;
+    outline: none;
+    border: 1px solid wheat;
+    padding: 12px 20px;
+    margin-bottom: 10px ;
+    border-radius: 20px;
+    background: #e4e4e4;
+}
+
+.wrapper .add-todo{
+    text-align: start;
+}
+.wrapper .add-todo .add{
+    text-align: start;
+    width: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+button{
+    font-size: 1rem;
+    margin-top: 1.8rem;
+    padding: 10px 0;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    width: 90%;
+    background: rgb(17, 107, 143);
+}
+button:hover{
+    background: rgb(17, 107, 143, 0.877);
+}
+input:focus{
+    border: 1px solid rbg(192, 192, 192);
+}
+
+ul li{
+    width: fit-content; 
+}
+
+.navbar {
+    margin-left: 14em;
+    border-radius: 10px;
+    overflow: hidden;
+    color: black;
+    outline: solid;
+    background-color: #000000;
+  }
+  
+  .navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: end;
+    text-decoration: none;
+  }
+  
+  .dropdown {
+    float: left;
+    overflow: hidden;
+  }
+  
+  .dropdown .dropbtn {
+    font-size: 16px;  
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    padding-right: 12px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+  }
+  
+  .navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: rgb(0, 238, 255);
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
