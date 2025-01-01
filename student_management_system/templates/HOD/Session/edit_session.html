@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} Edit Session {% endblock %}
+{% load static %}
+{% block content %}
+ <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Edit Session</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'hod_view_session' %}">Session</a></li>
+                           <li class="breadcrumb-item active">Edit Session</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-body">
+                           <form method="post" action="{% url 'hod_update_session' %}" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="row">
+                                 <div class="col-12">
+                                    <h5 class="form-title"><span>Session Information</span></h5>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                       {% include 'layouts/messages.html' %}
+                                    <div class="form-group">
+                                       <label>Session Year Start</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="session_year_start" value="{% for i in session %}{{i.session_start}}{% endfor %}">
+                                           <input type="text" class="form-control" name="session_id" value="{% for i in session %}{{i.id}}{% endfor %}" hidden>
+                                       </div>
+                                    </div>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Session Year End</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="session_year_end" value="{% for i in session %}{{i.session_end}}{% endfor %}">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Update Session</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+{% endblock %}

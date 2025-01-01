@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %} Notification {% endblock %}
+{% block content %}
+ <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Notification</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Dashboard</a></li>
+                           <li class="breadcrumb-item active">Notifications</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card card-table">
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="table table-hover table-center mb-0" id="table_id" >
+                                 <thead>
+                                    <tr>
+                                       <th>Messages</th>
+                                       <th class="text-right">Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {% for i in student_notification %}
+                                    <tr>
+                                       <td>{{ i.message }}</td>
+                                       <td class="text-right">
+                                          <div class="actions">
+                                             {% if i.status == 0 %}
+                                             <a href="{% url 'student_notification_markDone' status=i.id %}" class="btn btn-danger">Done</a>
+                                             {% else %}
+                                             <button class="btn btn-danger" disabled="disabled">Done</button>
+                                             {% endif %}
+                                         </div>
+                                       </td>
+                                    </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+{% endblock %}

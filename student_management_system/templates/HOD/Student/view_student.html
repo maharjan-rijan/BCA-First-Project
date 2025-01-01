@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %} View Student {% endblock %}
+{% load static %}
+{% block content %}
+                  <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Students</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
+                           <li class="breadcrumb-item active">Students</li>
+                        </ul>
+                     </div>
+                     <div class="col-auto text-right float-right ml-auto">
+                        <a href="{% url 'hod_add_student' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     {% include 'layouts/messages.html' %}
+                     <div class="card card-table">
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table id="table_id" class="table table-hover table-center mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th>ID</th>
+                                       <th>Photo</th>
+                                       <th>Name</th>
+                                       <th>Email</th>
+                                       <th>Course</th>
+                                       <th>Gender</th>
+                                       <th>Address</th>
+                                       <th>Session Year</th>
+                                       <th class="text-right">Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {% for st in student %}
+                                    <tr>
+                                       <td>{{ forloop.counter }}</td>
+                                       <td>
+                                          <h2 class="table-avatar">
+                                             <a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/{{ st.admin.profile_pic }}" alt="User Image"></a>
+                                          </h2>
+                                       </td>
+                                       <td>{{ st.admin.first_name }}&nbsp;{{ st.admin.last_name }}</td>
+                                       <td>{{ st.admin.email }}</td>
+                                       <td>{{ st.course_id.name }}</td>
+                                       <td>{{ st.gender }}</td>
+                                       <td>{{ st.address }}</td>
+                                       <td>{{ st.session_year_id.session_start }} to {{ st.session_year_id.session_end }}</td>
+                                       <td class="text-right">
+                                          <div class="actions">
+                                             <a href="{% url 'hod_edit_student' st.id %}" class="btn btn-sm bg-success-light mr-2">
+                                                 <i class="fas fa-pen"></i>
+                                             </a>
+                                              <a href="{% url 'hod_delete_student' st.admin.id %}" class="btn btn-sm bg-success-light mr-2">
+                                                 <i class="fas fa-trash"></i>
+                                             </a>
+                                         </div>
+                                       </td>
+                                    </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+ {% endblock %}

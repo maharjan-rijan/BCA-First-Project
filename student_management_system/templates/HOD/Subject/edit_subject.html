@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %} Edit Subject {% endblock %}
+{% load static %}
+{% block content %}
+ <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Edit Subjects</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'hod_view_subject' %}">Subject</a></li>
+                           <li class="breadcrumb-item active">Add Subjects</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-body">
+                           <form method="post" action="{% url 'hod_update_subject' %}" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="row">
+                                 <div class="col-12">
+                                    <h5 class="form-title"><span>Subject Information</span></h5>
+                                     {% include 'layouts/messages.html' %}
+                                 </div>
+                               <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Subject Code</label>
+                                       <input type="text" class="form-control" name = "subject_code" value="{{ subject.subject_code }}">
+                                    </div>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Subject Name</label>
+                                       <input type="text" class="form-control" name = "subject_name" value="{{ subject.name }}">
+                                        <input type="text" class="form-control" name = "subject_id" value="{{ subject.id }}" hidden>
+                                    </div>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Courses</label>
+                                       <select class="form-control" name="course_id">
+                                          <option value="">Select Course</option>
+                                           {% for i in course %}
+                                          <option value="{{ i.id }}">{{ i.name }}</option>
+                                           {% endfor %}
+                                       </select>
+                                    </div>
+                                 </div>
+                                  <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Staff</label>
+                                       <select class="form-control" name="staff_id">
+                                          <option value="">Select Staff</option>
+                                          {% for i in staff %}
+                                          <option value="{{ i.id }}">{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name }}</option>
+                                           {% endfor %}
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Update Subject</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+{% endblock %}

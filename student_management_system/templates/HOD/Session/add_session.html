@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} Add Session {% endblock %}
+{% block content %}
+ <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Add Session</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'hod_view_session' %}">Session</a></li>
+                           <li class="breadcrumb-item active">Add Session</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-body">
+                           <form method="post" action="{% url 'hod_add_session' %}" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="row">
+                                 <div class="col-12">
+                                    <h5 class="form-title"><span>Session Information</span></h5>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                        {% include 'layouts/messages.html' %}
+                                    <div class="form-group">
+                                       <label>Session Year Start</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="session_year_start">
+                                       </div>
+                                    </div>
+                                 </div>
+                                   <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Session Year End</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="session_year_end">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Add Session</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+{% endblock %}

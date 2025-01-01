@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% load static %}
+{% block content %}
+    <div class="page-header">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <h3 class="page-title">Welcome Admin!</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+                  <div class="row">
+                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-one w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-user-graduate"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>{{ student_count }}</h3>
+                                 <h6>Students</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-two w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-chalkboard-teacher"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>{{ staff_count }}</h3>
+                                 <h6>Staff</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-three w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-graduation-cap"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>{{ course_count }}</h3>
+                                 <h6>Course</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-four w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-book"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>{{ subject_count }}</h3>
+                                 <h6>Subject</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6 d-flex">
+                  <div class="card flex-fill">
+                     <div class="card-header">
+                        <h5 class="card-title">Staff Lists</h5>
+                     </div>
+                     <div class="card-body">
+                        <div class="table-responsive" style="height: 100%;!important;">
+                           <table class="table table-hover table-center">
+                              <thead class="thead-light">
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                     <th>Gender</th>
+                                    <th>Email</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for i in staff %}
+                                 <tr>
+                                    <td class="text-nowrap">
+                                       <div>ST{{  i.admin.id }}</div>
+                                    </td>
+                                    <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
+                                    <td>{{ i.gender }}</td>
+                                     <td>{{ i.admin.email }}</td>
+                                 </tr>
+                               {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            </div>
+          {% endblock %}
