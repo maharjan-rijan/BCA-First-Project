@@ -27,6 +27,7 @@ class Student(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
+    date_of_birth = models.DateField(null=True)
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
     session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -38,6 +39,7 @@ class Staff(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
+    date_of_birth = models.DateField(null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

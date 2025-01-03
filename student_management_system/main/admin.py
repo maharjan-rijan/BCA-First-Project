@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class UserModel(UserAdmin):
-    list_display = ['username', 'user_type', 'email', 'first_name', 'last_name']
+    list_display = ['username', 'user_type','first_name', 'last_name', 'email']
 
 admin.site.register(CustomUser, UserModel)
 admin.site.register(Course)

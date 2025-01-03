@@ -37,6 +37,7 @@ def add_student(request):
         last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
         address = request.POST.get('address')
+        date_of_birth = request.POST.get('date_of_birth')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -68,6 +69,7 @@ def add_student(request):
             student = Student(
                 admin=user,
                 address=address,
+                date_of_birth = date_of_birth,
                 session_year_id=session_year,
                 course_id=course,
                 gender=gender
@@ -102,6 +104,7 @@ def update_student(request):
         last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
         address = request.POST.get('address')
+        date_of_birth = request.POST.get('date_of_birth')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -122,6 +125,7 @@ def update_student(request):
 
         student = Student.objects.get(admin=student_id)
         student.address=address
+        student.date_of_birth=date_of_birth
         student.gender=gender
 
         course  = Course.objects.get(id=course_id)
@@ -196,6 +200,7 @@ def add_staff(request):
         last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
         address = request.POST.get('address')
+        date_of_birth = request.POST.get('date_of_birth')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -221,6 +226,7 @@ def add_staff(request):
             staff = Staff(
                 admin=user,
                 address=address,
+                date_of_birth=date_of_birth,
                 gender=gender
             )
             staff.save()
@@ -250,6 +256,7 @@ def update_staff(request):
         last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
         address = request.POST.get('address')
+        date_of_birth = request.POST.get('date_of_birth')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -269,6 +276,7 @@ def update_staff(request):
         staff = Staff.objects.get(admin=staff_id)
         staff.gender = gender
         staff.address = address
+        staff.date_of_birth = date_of_birth
         staff.save()
         messages.success(request, 'Staff is Updated Successfully.')
         return redirect('hod_view_staff')
