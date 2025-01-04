@@ -74,7 +74,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-md-6 d-flex">
+               <div class="col-md-12 d-flex">
                   <div class="card flex-fill">
                      <div class="card-header">
                         <h5 class="card-title">Staff Lists</h5>
@@ -92,6 +92,39 @@
                               </thead>
                               <tbody>
                               {% for i in staff %}
+                                 <tr>
+                                    <td class="text-nowrap">
+                                       <div>ST{{  i.admin.id }}</div>
+                                    </td>
+                                    <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
+                                    <td>{{ i.gender }}</td>
+                                     <td>{{ i.admin.email }}</td>
+                                 </tr>
+                               {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 d-flex">
+                  <div class="card flex-fill">
+                     <div class="card-header">
+                        <h5 class="card-title">Students Lists</h5>
+                     </div>
+                     <div class="card-body">
+                        <div class="table-responsive" style="height: 100%;!important;">
+                           <table class="table table-hover table-center">
+                              <thead class="thead-light">
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                     <th>Gender</th>
+                                    <th>Email</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for i in student %}
                                  <tr>
                                     <td class="text-nowrap">
                                        <div>ST{{  i.admin.id }}</div>

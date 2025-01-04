@@ -33,7 +33,7 @@
                   <h1>Login</h1>
                   <p class="account-subtitle">Access to our dashboard</p>
                   <!-- Error and success messages -->
-                 {% include 'layouts/messages.html' %}
+                 {% include "layouts/messages.html" %}
                   <!-- Login Form -->
                   <form action="{% url 'doLogin' %}" method="post">
                      {% csrf_token %}
