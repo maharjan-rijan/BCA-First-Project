@@ -6,7 +6,13 @@ from main.models import *
 
 @login_required(login_url='/')
 def staff_home(request):
-    return render(request, 'STAFF/home.html')
+    staff = Staff.objects.filter(admin=request.user.id)
+    for i in staff:
+        staff_id = i.id
+        staff_subject = Subject.objects.filter(staff_id=staff_id)
+        
+        context = {'staff_subject' : staff_subject}
+    return render(request, 'STAFF/home.html', context)
 
 @login_required(login_url='/')
 def staff_notification(request):

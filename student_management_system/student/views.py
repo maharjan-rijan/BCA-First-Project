@@ -5,7 +5,13 @@ from main.models import *
 
 @login_required(login_url='/')
 def student_home(request):
-    return render(request, 'STUDENT/home.html')
+    student = Student.objects.filter(admin=request.user.id)
+    for i in student:
+        student_id = i.id
+        subject = Subject.objects.filter(id=student_id)
+        context = {'student_subject': subject}
+        
+    return render(request, 'STUDENT/home.html', context)
 
 @login_required(login_url='/')
 def student_notification(request):

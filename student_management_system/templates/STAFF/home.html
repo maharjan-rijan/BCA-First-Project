@@ -2,11 +2,92 @@
 {% block title %} Dashboard {% endblock %}
 {% load static %}
 {% block content %}
-<div class="col-md-12 d-flex">
-    <div class="card flex-fill">
-       <div class="card-body">
-        <img src="{% static 'assets/img/Logos/dashboardimg.png' %}" alt="" srcset="">
-       </div>
-    </div>
- </div>
-{% endblock %}
+    <div class="page-header">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <h3 class="page-title">Welcome {{ user.first_name }}&nbsp;{{ user.last_name }}</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 d-flex">
+                  <div class="card flex-fill">
+                     <div class="card-header">
+                        <h5 class="card-title">Profile</h5>
+                     </div>
+                     <div class="card-body">
+                        <section class="w-100 px-3 py-4" style="background-color: #9de2ff; border-radius: .5rem .5rem 0 0;">
+                           <div class="row d-flex justify-content">
+                             <div class="col col-md-10 col-lg-8 col-xl-7">
+                               <div class="card" style="border-radius: 15px;">
+                                 <div class="card-body">
+                                   <div class="d-flex">
+                                     <div class="flex-shrink-0 m-2">
+                                       <img src="/{{ user.profile_pic}}" alt="Generic placeholder image" class="img-fluid" style="width: 180px; border-radius: 10px;">
+                                     </div>
+                                     <div class="flex-grow-1 ms-3 mt-5 text-center">
+                                       <h5 class="mb-1">{{ user.first_name }} {{ user.last_name}}</h5>
+                                       <p class="mb-2 pb-1">{{ user.username }}</p>
+                                       <div class="col-auto text-center float-center ml-auto">
+                                          <a href="{% url 'profile' %}" class="btn btn-primary">Profile Update</a>
+                                        </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                             <div class="col">
+                               <div class="card" style="border-radius: 15px;">
+                                 <div class="card-body">
+                                   <div class="d-flex justify-content-center">
+                                     <div class="flex-shrink-0">
+                                       <img src="{% static 'assets/img/Logos/scholarlyLogo.png' %}" alt="Generic placeholder image" class="img-fluid" style="width: 200px; border-radius: 10px;">
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>  
+                         </section>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 d-flex">
+                  <div class="card flex-fill">
+                     <div class="card-header">
+                        <h5 class="card-title">Subject Lists</h5>
+                     </div>
+                     <div class="card-body">
+                        <div class="table-responsive" style="height: 100%;!important;">
+                           <table class="table table-hover table-center">
+                              <thead class="thead-light">
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>Subject Code</th>
+                                    <th>Subject Title</th>
+                                    <th>Course</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for i in staff_subject %}
+                                 <tr>
+                                    <td class="text-nowrap">
+                                       <div>{{ forloop.counter }}</div>
+                                    </td>
+                                    <td>{{ i.subject_code }}</td>
+                                    <td>{{ i.name }}</td>
+                                     <td>{{ i.course }}&#32; &#40;{{i.course.short_name}}&#41;</td>
+                                 </tr>
+                               {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            </div>
+          {% endblock %}

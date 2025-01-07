@@ -11,8 +11,6 @@ def home(request):
     staff = Staff.objects.all()
     course_count=Course.objects.all().count()
     subject_count=Subject.objects.all().count()
-    student_gender_male = Student.objects.filter(gender='male').count()
-    student_gender_female = Student.objects.filter(gender='female').count()
     context={
         'student_count':student_count,
         'student':student,
@@ -20,8 +18,6 @@ def home(request):
         'subject_count':subject_count,
         'staff_count':staff_count,
         'course_count':course_count,
-        'student_gender_male':student_gender_male,
-        'student_gender_female':student_gender_female,
              }
     return render(request,'HOD/home.html', context)
 # ===================================Student==================================== #
@@ -152,10 +148,16 @@ def delete_student(request, admin):
 @login_required(login_url='/')
 def add_course(request):
     if request.method == "POST":
+        course_code = request.POST.get('course_code')
         course_name = request.POST.get('course_name')
-        course = Course(name=course_name)
+        short_name =   request.POST.get('short_name')
+        course = Course(
+            name=course_name,
+            course_code = course_code,
+            short_name = short_name
+            )
         course.save()
-        messages.success(request, 'Course are Successfully Created.')
+        messages.success(request, 'Course Added Successfully.')
         return redirect('hod_view_course')
     return render(request, 'HOD/Course/add_course.html')
 
@@ -175,9 +177,13 @@ def edit_course(request,id):
 def update_course(request):
     if request.method == "POST":
         name = request.POST.get('course_name')
+        course_code = request.POST.get('course_code')
+        short_name = request.POST.get('short_name')
         course_id = request.POST.get('course_id')
         course = Course.objects.get(id=course_id)
         course.name = name
+        course.course_code = course_code
+        course.short_name = short_name
         course.save()
         messages.success(request, 'Course is Updated Successfully.')
         return redirect('hod_view_course')
