@@ -98,11 +98,10 @@
                      </div>
                      <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
                      {% if user.user_type  == '1' %}
-                           
                             {% elif user.user_type == '2' %}
-                            <a class="dropdown-item" href="{% url 'staff_send_notification' %}">Inbox</a>
+                            <a class="dropdown-item" href="{% url 'staff_notification' %}">Inbox</a>
                             {% else %}
-                            <a class="dropdown-item" href="{% url 'student_send_notification' %}">Inbox</a>
+                            <a class="dropdown-item" href="{% url 'student_notification' %}">Inbox</a>
                             {% endif %}
                      <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                   </div>
