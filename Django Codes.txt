@@ -1,0 +1,6 @@
+Create Virtual Environment -> py -m venv .venv
+Active Virtual Environment -> source .venv/Scripts/Activate
+Create Project -> django-admin startproject project_name
+Create app -> py manage.py startapp app_name
+Migration -> py manage.py makemigrations 
+	  	  -> py manage.py migrate

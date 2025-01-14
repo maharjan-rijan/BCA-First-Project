@@ -25,9 +25,21 @@
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
+                                       <label>Course Code</label>
+                                       <input type="text" class="form-control" name="course_code" value="{{ course.course_code }}">
+                                       <input type="text" class="form-control" name="course_id" value="{{ course.id }}" hidden>
+                                    </div>
+                                 </div>
+                                 <div class="col-12 col-sm-6">
+                                    <div class="form-group">
                                        <label>Course Title</label>
                                        <input type="text" class="form-control" name="course_name" value="{{ course.name }}">
-                                       <input type="text" class="form-control" name="course_id" value="{{ course.id }}" hidden>
+                                    </div>
+                                 </div>
+                                 <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Short Name</label>
+                                       <input type="text" class="form-control" name="short_name" value="{{ course.short_name }}">
                                     </div>
                                  </div>
                                  <div class="col-12">

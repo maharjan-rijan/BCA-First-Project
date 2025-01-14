@@ -100,7 +100,6 @@
                                     <div class="form-group">
                                        <label>Session Year</label>
                                        <select class="form-control" name="session_year_id">
-                                          <option value="">Select Year</option>
                                           {% for i in session_year %}
                                           <option value="{{ i.id }}">{{ i.session_start }} to {{ i.session_end }}</option>
                                            {% endfor %}
