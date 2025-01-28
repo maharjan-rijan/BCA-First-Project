@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import date, timedelta
 # Create your models here.
 class CustomUser(AbstractUser):
     USERTYPE = (
@@ -29,7 +30,7 @@ class Student(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
-    date_of_birth = models.DateField(null=True)
+    date_of_birth = models.DateField(date.today() -timedelta(days=365), null=True)
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
     session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -41,7 +42,7 @@ class Staff(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
-    date_of_birth = models.DateField(null=True)
+    date_of_birth = models.DateField(date.today() - timedelta(days=30), null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -70,7 +71,7 @@ class Staff_Notification(models.Model):
 
 class Staff_leave(models.Model):
     staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    leave_date = models.DateTimeField(auto_now_add=True)
+    leave_date = models.DateTimeField(date.today() - timedelta(days=1), null=True)
     message = models.TextField()
     status = models.IntegerField(null=True,default=0)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -81,7 +82,7 @@ class Staff_leave(models.Model):
 
 class Student_leave(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    leave_date = models.DateTimeField(auto_now_add=True)
+    leave_date = models.DateTimeField(date.today() - timedelta(days=1), null=True)
     message = models.TextField()
     status = models.IntegerField(null=True,default=0)
     created_date = models.DateTimeField(auto_now_add=True)
