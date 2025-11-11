@@ -2,11 +2,19 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from datetime import timedelta
 
-def date_of_birth(value):
-    if value < datetime.date.today():
+def date_of_birth(Student):
+    if Student.date_of_birth < datetime.date.today():
         raise ValidationError("Date Must Be future.")
-    return value
+    return Student.date_of_birth
+
+def session_validate(Session_year):
+    if Session_year.session_start <= Session_year.session_end:
+        raise ValidationError("End date must be after start date.")
+    
+    if Session_year.session_end - Session_year.session_start < timedelta(days = 365):
+        raise ValidationError("Start date must be at least 1 year before the end date.")
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -59,7 +67,7 @@ class Staff(models.Model):
 class Subject(models.Model):
     objects = None
     name = models.CharField(max_length= 100)
-    subject_code = models.CharField(max_length= 100, unique=True, null= True)
+    subject_code = models.CharField(max_length= 100, unique=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
