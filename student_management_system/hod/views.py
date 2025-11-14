@@ -140,7 +140,7 @@ def update_student(request):
 def delete_student(request, admin):
     student = CustomUser.objects.get(id=admin)
     student.delete()
-    messages.success(request, student.first_name + " " + student.last_name +' Records are Deleted Successfully.')
+    messages.warning(request, student.first_name + " " + student.last_name +' Records are Deleted Successfully.')
     return redirect('hod_view_student')
 
 # ===================================Course==================================== #
@@ -303,6 +303,7 @@ def add_subject(request):
     course = Course.objects.all()
     staff = Staff.objects.all()
     if request.method == 'POST':
+        subject_code = request.POST.get('subject_code')
         subject_name = request.POST.get('subject_name')
         course_id = request.POST.get('course_id')
         staff_id = request.POST.get('staff_id')
@@ -311,6 +312,7 @@ def add_subject(request):
         staff = Staff.objects.get(id=staff_id)
 
         subject = Subject(
+            subject_code = subject_code,
             name=subject_name,
             course=course,
             staff=staff,
@@ -340,6 +342,7 @@ def edit_subject(request, id):
 def update_subject(request):
     if request.method == "POST":
         subject_id=request.POST.get('subject_id')
+        subject_code = request.POST.get('subject_code')
         subject_name = request.POST.get('subject_name')
         course_id = request.POST.get('course_id')
         staff_id = request.POST.get('staff_id')
@@ -348,6 +351,7 @@ def update_subject(request):
 
         subject = Subject(
             id=subject_id,
+            subject_code=subject_code,
             name=subject_name,
             course=course,
             staff=staff,
@@ -360,7 +364,7 @@ def update_subject(request):
 def delete_subject(request, id):
     subject = Subject.objects.filter(id=id)
     subject.delete()
-    messages.success(request, 'Subject is Deleted Successfully.')
+    messages.warning(request, 'Subject is Deleted Successfully.')
     return redirect('hod_view_subject')
 
 # ===================================Session==================================== #

@@ -26,7 +26,7 @@
                                  <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Leave Date</label>
-                                       <input type="date" class="form-control" name="leave_date">
+                                       <input type="date" class="form-control" id="leave_date" name="leave_date">
                                     </div>
                                  </div>
                                   <div class="col-12 col-sm-12">
@@ -72,7 +72,7 @@
                                  <tbody>
                                     {% for i in student_leave_history %}
                                     <tr>
-                                       <td>{{ i.leave_date }}</td>
+                                       <td>{{ i.leave_date|date:'Y-m-d' }}</td>
                                        <td>{{ i.message }}</td>
                                        <td class="text-right">
                                           <div class="actions">
@@ -99,4 +99,11 @@
     </div>
   </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById("leave_date").setAttribute('min', today);
+    });
+</script>
+
 {% endblock %}

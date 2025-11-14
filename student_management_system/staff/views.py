@@ -44,13 +44,13 @@ def staff_apply_leave(request):
 @login_required(login_url='/')
 def apply_leave_save(request):
     if request.method == "POST":
-        leaave_date = request.POST.get('leaave_date')
+        leave_date = request.POST.get('leave_date')
         leave_message = request.POST.get('leave_message')
 
         staff = Staff.objects.get(admin=request.user.id)
         leave = Staff_leave(
             staff_id = staff,
-            leave_date = leaave_date,
+            leave_date = leave_date,
             message = leave_message,
         )
         leave.save()

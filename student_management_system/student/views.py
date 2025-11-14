@@ -5,11 +5,12 @@ from main.models import *
 
 @login_required(login_url='/')
 def student_home(request):
-    student = Student.objects.filter(admin=request.user.id)
-    for i in student:
-        student_id = i.id
-        subject = Subject.objects.filter(id=student_id)
-        context = {'student_subject': subject}
+    student = Student.objects.get(admin=request.user.id)
+    subjects = Subject.objects.filter(course = student.course_id)
+    context = {
+        'student': student,
+        'student_subject': subjects,
+    }
         
     return render(request, 'STUDENT/home.html', context)
 
@@ -63,13 +64,13 @@ def student_apply_leave(request):
 @login_required(login_url='/')
 def student_apply_leave_save(request):
     if request.method == "POST":
-        leaave_date = request.POST.get('leaave_date')
+        leave_date = request.POST.get('leave_date')
         leave_message = request.POST.get('leave_message')
 
         student = Student.objects.get(admin=request.user.id)
         leave = Student_leave(
             student_id=student,
-            leave_date=leaave_date,
+            leave_date=leave_date,
             message=leave_message,
         )
         leave.save()

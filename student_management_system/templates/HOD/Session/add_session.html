@@ -27,7 +27,7 @@
                                     <div class="form-group">
                                        <label>Session Year Start</label>
                                        <div>
-                                          <input type="date" class="form-control" name="session_year_start">
+                                          <input type="date" class="form-control" id="session_year_start" name="session_year_start">
                                        </div>
                                     </div>
                                  </div>
@@ -35,7 +35,7 @@
                                     <div class="form-group">
                                        <label>Session Year End</label>
                                        <div>
-                                          <input type="date" class="form-control" name="session_year_end">
+                                          <input type="date" class="form-control" id="session_year_end" name="session_year_end" disabled>
                                        </div>
                                     </div>
                                  </div>
@@ -48,4 +48,20 @@
                      </div>
                   </div>
                </div>
+<script>
+  document.getElementById('session_year_start').addEventListener('change', function() {
+    const startDate = new Date(this.value);
+    if (!isNaN(startDate)) {
+      const endInput = document.getElementById('session_year_end');
+      endInput.disabled = false; // make it clickable
+      
+      // calculate 1 year after start date
+      const nextYear = new Date(startDate);
+      nextYear.setFullYear(startDate.getFullYear() + 1);
+      
+      // set min date to exactly 1 year after start
+      endInput.min = nextYear.toISOString().split('T')[0];
+    }
+  });
+</script>
 {% endblock %}

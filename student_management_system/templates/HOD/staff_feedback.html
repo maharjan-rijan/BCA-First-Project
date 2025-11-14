@@ -40,7 +40,7 @@
                                        <td>{{ i.id }}</td>
                                        <td>{{ i.staff_id.admin.first_name }}&nbsp;{{ i.staff_id.admin.last_name}}</td>
                                        <td>{{ i.feedback }}</td>
-                                        <td>{{ i.created_date }}</td>
+                                        <td>{{ i.created_date|date:'Y-m-d' }}</td>
                                        <td class="text-right">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#send_notification_model-{{forloop.counter}}">Reply</button>                                       </td>
                                     </tr>
