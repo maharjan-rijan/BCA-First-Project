@@ -10,4 +10,7 @@ urlpatterns = [
 
     path("feedback",staff_feedback, name="staff_feedback"),
     path("feedback/save",staff_feedback_save, name="staff_feedback_save"),
+    
+    path("add-result",staff_add_result, name='staff_add_result'),
+
 ]

@@ -68,6 +68,13 @@
                   <ul>
                      <li class="{% active_link 'staff_home' 'active' %}"><a href="{% url 'staff_home' %}"><i class="fas fa-graduation-cap"></i><span> Dashboard</span></a></li>
                      <li class="{% active_link 'staff_notification' 'active' %}"><a href="{% url 'staff_notification' %}"><i class="fas fa-bell"></i><span> Notification</span></a></li>
+                     <li class="submenu {% active_link 'staff_feedback_reply' 'active' %} {% active_link 'student_feedback_reply' 'active' %}">
+                        <a href="#"><i class="fas fa-comment"></i> <span>Result</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'staff_add_result' %}"> Add Result</a></li>
+                           <li><a href="#"> View Result</a></li>
+                        </ul>
+                     </li>
                      <li class="{% active_link 'staff_feedback' 'active' %}"><a href="{% url 'staff_feedback' %}"><i class="fas fa-comment-alt"></i><span> Send Feedback</span></a></li>
                      <li class="{% active_link 'staff_apply_leave' 'active' %}"><a href="{% url 'staff_apply_leave' %}"><i class="fas fa-pray"></i><span> Apply for Leave</span></a></li>
                      <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><span> Logout</span></a></li>

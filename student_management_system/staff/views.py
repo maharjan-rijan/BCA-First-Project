@@ -77,4 +77,35 @@ def staff_feedback_save(request):
         feedback.save()
         return redirect('staff_feedback')
     
-   
+   # ===================================Result==================================== #
+@login_required(login_url='/')
+def staff_add_result(request):
+    staff = Staff.objects.get(admin=request.user.id)
+    subject = Subject.objects.filter(staff_id = staff)
+    session_year = Session_year.objects.all()
+    action = request.GET.get('action')
+    get_subject = None
+    get_session_year = None
+    students = None
+    
+    if action is not None:
+        if request.method == "POST":
+            subject_id = request.POST.get('subject_id')
+            session_year_id = request.POST.get('session_year_id')
+            
+            get_subject = Subject.objects.get(id=subject_id)
+            get_session_year = Session_year.objects.get(id=session_year_id)
+            
+            subjects = Subject.objects.filter(id=subject_id)
+            for i in subjects:
+                student_id = i.course.id
+                students = Student.objects.filter(course_id=student_id)
+    context = {
+        'subject': subject,
+        'session_year': session_year,
+        'action': action,
+        'get_subject': get_subject,
+        'get_session': get_session_year,
+        'students': students,
+    }   
+    return render(request,'Staff/add_result.html', context)

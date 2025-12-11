@@ -18,8 +18,9 @@ def home(request):
         'subject_count':subject_count,
         'staff_count':staff_count,
         'course_count':course_count,
-             }
+    }
     return render(request,'HOD/home.html', context)
+
 # ===================================Student==================================== #
 
 @login_required(login_url='/')
