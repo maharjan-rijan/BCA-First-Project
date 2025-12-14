@@ -339,7 +339,7 @@ def edit_subject(request, id):
     context = {'subject':subject, 'course':course,'staff':staff}
     return render(request, 'HOD/Subject/edit_subject.html',context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def update_subject(request):
     if request.method == "POST":
         subject_id=request.POST.get('subject_id')
@@ -397,7 +397,7 @@ def edit_session(request, id):
     context = {'session':session}
     return render(request, 'HOD/Session/edit_session.html',context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def update_session(request):
     if request.method == "POST":
         session_id = request.POST.get('session_id')
@@ -427,7 +427,7 @@ def staff_send_notification(request):
     context = {'staff':staff, 'seen_notification':seen_notification}
     return render(request, 'HOD/staff_send_notification.html',context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def staff_save_notification(request):
     if request.method == "POST":
         staff_id = request.POST.get('staff_id')
@@ -488,7 +488,7 @@ def staff_feedback(request):
     context = {'feedback':feedback, 'feedback_history':feedback_history}
     return render(request, 'HOD/staff_feedback.html', context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def staff_feedback_save(request):
     if request.method == "POST":
         feedback_id = request.POST.get('feedback_id')
@@ -507,7 +507,7 @@ def student_send_notification(request):
     context = {'student':student, 'seen_student_notification':seen_student_notification}
     return render(request, 'HOD/student_send_notification.html',context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def student_save_notification(request):
     if request.method == "POST":
         student_id = request.POST.get('student_id')
@@ -528,7 +528,7 @@ def student_feedback(request):
     context = {'feedback': feedback, 'feedback_history':feedback_history}
     return render(request, 'HOD/student_feedback.html', context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def student_feedback_save(request):
     if request.method == "POST":
         feedback_id = request.POST.get('feedback_id')

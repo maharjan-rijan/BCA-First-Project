@@ -67,8 +67,15 @@
                   {% elif user.user_type == '2' %}
                   <ul>
                      <li class="{% active_link 'staff_home' 'active' %}"><a href="{% url 'staff_home' %}"><i class="fas fa-graduation-cap"></i><span> Dashboard</span></a></li>
+                     <li class="submenu {% active_link 'staff_take_attendance' 'active' %} {% active_link 'staff_view_attendance' 'active' %}">
+                        <a href="#"><i class="fas fa-calendar"></i> <span>Attendance</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'staff_take_attendance' %}"> Take Attendance</a></li>
+                           <li><a href="{% url 'staff_view_attendance' %}"> View Attendance</a></li>
+                        </ul>
+                     </li>
                      <li class="{% active_link 'staff_notification' 'active' %}"><a href="{% url 'staff_notification' %}"><i class="fas fa-bell"></i><span> Notification</span></a></li>
-                     <li class="submenu {% active_link 'staff_feedback_reply' 'active' %} {% active_link 'student_feedback_reply' 'active' %}">
+                     <li class="submenu {% active_link 'staff_add_result' 'active' %} {% active_link 'student_feedback_reply' 'active' %}">
                         <a href="#"><i class="fas fa-comment"></i> <span>Result</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="{% url 'staff_add_result' %}"> Add Result</a></li>

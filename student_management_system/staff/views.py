@@ -8,7 +8,7 @@ from main.models import *
 def staff_home(request):
     staff = Staff.objects.filter(admin=request.user.id)
     for i in staff:
-        staff_id = i.id
+        staff_id = i.id # type: ignore
         staff_subject = Subject.objects.filter(staff_id=staff_id)
         
         context = {'staff_subject' : staff_subject}
@@ -18,7 +18,7 @@ def staff_home(request):
 def staff_notification(request):
     staff = Staff.objects.filter(admin=request.user.id)
     for i in staff:
-        staff_id = i.id
+        staff_id = i.id # type: ignore
         staff_notification = Staff_Notification.objects.filter(staff_id=staff_id)
 
         context = {'staff_notification': staff_notification}
@@ -35,13 +35,13 @@ def staff_notification_markDone(request, status):
 def staff_apply_leave(request):
     staff = Staff.objects.filter(admin=request.user)
     for i in staff:
-        staff_id = i.id
+        staff_id = i.id # type: ignore
         staff_leave_history = Staff_leave.objects.filter(staff_id=staff_id)
 
         context = {'staff_leave_history': staff_leave_history}
     return render(request, 'STAFF/apply_leave.html', context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def apply_leave_save(request):
     if request.method == "POST":
         leave_date = request.POST.get('leave_date')
@@ -64,7 +64,7 @@ def staff_feedback(request):
     context = {'feedback_history': feedback_history}
     return render(request, 'STAFF/feedback.html',context)
 
-@login_required(login_url='/')
+@login_required(login_url='/') # type: ignore
 def staff_feedback_save(request):
     if request.method == "POST":
         feedback_message = request.POST.get('feedback_message')
@@ -98,7 +98,7 @@ def staff_add_result(request):
             
             subjects = Subject.objects.filter(id=subject_id)
             for i in subjects:
-                student_id = i.course.id
+                student_id = i.course.id # type: ignore
                 students = Student.objects.filter(course_id=student_id)
     context = {
         'subject': subject,
@@ -109,3 +109,77 @@ def staff_add_result(request):
         'students': students,
     }   
     return render(request,'Staff/add_result.html', context)
+
+@login_required(login_url='/')
+def staff_take_attendance(request):
+    staff_id = Staff.objects.get(admin = request.user.id)
+    subject = Subject.objects.filter(staff = staff_id)
+    session_year = Session_year.objects.all()
+    action = request.GET.get('action')
+    
+    get_subject = None
+    get_session_year = None
+    students = None
+    
+    if action is not None:
+        if request.method == "POST":
+            subject_id = request.POST.get('subject_id')
+            session_year_id = request.POST.get('session_year_id')
+            
+            get_subject = Subject.objects.get(id = subject_id)
+            get_session_year = Session_year.objects.get(id = session_year_id)
+            
+            subjects = Subject.objects.filter(id = subject_id)
+            for i in subjects:
+                student_id = i.course.id  # type: ignore
+                students = Student.objects.filter(course_id=student_id)
+    context = {
+        'subject': subject,
+        'session_year': session_year,
+        'action': action,
+        'get_subject': get_subject,
+        'get_session': get_session_year,
+        'students': students,
+    }   
+    return render(request, 'Staff/take_attendance.html', context)
+
+@login_required(login_url='/') # type: ignore
+def staff_save_attendance(request):
+    if request.method == "POST":
+        subject_id = request.POST.get('subject_id')
+        session_year_id = request.POST.get('session_year_id')
+        attendance_date = request.POST.get('attendance_date')
+        student_id = request.POST.getlist('student_id')
+        
+        get_subject = Subject.objects.get(id=subject_id)
+        get_session_year = Session_year.objects.get(id=session_year_id)
+        
+        attendance = Attendance(
+            subject_id = get_subject,
+            attendance_date = attendance_date,
+            session_year_id = get_session_year
+        )
+        attendance.save()
+        for i in student_id:
+            stud_id = i
+            int_stud = int(stud_id)
+            
+            p_students = Student.objects.get(id = int_stud)
+            attendance_report = AtendanceReport(
+                student_id = p_students,
+                attendance_id = attendance,
+            )
+            attendance_report.save()
+            return redirect('staff_take_attendance')     
+        
+@login_required(login_url='/') # type: ignore
+def staff_view_attendance(request):
+    staff_id = Staff.objects.get(admin = request.user.id)
+    subject = Subject.objects.filter(staff = staff_id)
+    session_year = Session_year.objects.all()
+    
+    context = {
+        'subject': subject,
+        'session_year': session_year,
+    }   
+    return render(request, 'Staff/view_attendance.html', context)    

@@ -4,10 +4,9 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 
-def date_of_birth(Student):
+def date_of_birth_validate(Student):
     if Student.date_of_birth < datetime.date.today():
         raise ValidationError("Date Must Be future.")
-    return Student.date_of_birth
 
 def session_validate(Session_year):
     if Session_year.session_start <= Session_year.session_end:
@@ -16,6 +15,10 @@ def session_validate(Session_year):
     if Session_year.session_end - Session_year.session_start < timedelta(days = 365):
         raise ValidationError("Start date must be at least 1 year before the end date.")
 
+def attendance_validate(Attendance):
+    if Attendance.attendance_date != datetime.date.today():
+        raise ValidationError("Attendance can only be taken for today.")
+    
 # Create your models here.
 class CustomUser(AbstractUser):
     USERTYPE = (
@@ -45,7 +48,7 @@ class Student(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
-    date_of_birth = models.DateField(default=datetime.datetime.now, validators=[date_of_birth])
+    date_of_birth = models.DateField(null=True, validators=[date_of_birth_validate])
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
     session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -57,7 +60,7 @@ class Staff(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
-    date_of_birth = models.DateField(null=True)
+    date_of_birth = models.DateField(null=True, validators=[date_of_birth_validate])
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -65,7 +68,7 @@ class Staff(models.Model):
         return self.admin.username
 
 class Subject(models.Model):
-    objects = None
+    objects = None # type: ignore
     name = models.CharField(max_length= 100)
     subject_code = models.CharField(max_length= 100, unique=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -150,7 +153,7 @@ class Student_Result(models.Model):
     
 class Attendance(models.Model):
     subject_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
-    attendance_date = models.DateField()
+    attendance_date = models.DateField(validators=[attendance_validate])
     session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
