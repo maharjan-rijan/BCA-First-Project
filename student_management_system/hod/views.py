@@ -86,7 +86,7 @@ def view_student(request):
 
 @login_required(login_url='/')
 def edit_student(request,id):
-    student = Student.objects.filter(id=id)
+    student = Student.objects.get(id=id)
     course = Course.objects.all()
     session_year = Session_year.objects.all()
     context = {'student':student,'course':course, 'session_year':session_year}
@@ -157,7 +157,7 @@ def add_course(request):
             course_code = course_code,
             short_name = short_name
             )
-        course.save()
+        course.save() 
         messages.success(request, 'Course Added Successfully.')
         return redirect('hod_view_course')
     return render(request, 'HOD/Course/add_course.html')
