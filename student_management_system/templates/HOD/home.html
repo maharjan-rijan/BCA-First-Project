@@ -97,7 +97,7 @@
                                        <div>Staff {{  i.admin.id }}</div>
                                     </td>
                                     <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
-                                    <td>{{ i.gender }}</td>
+                                    <td>{{ i.gender|title }}</td>
                                      <td>{{ i.admin.email }}</td>
                                  </tr>
                                {% endfor %}
@@ -130,7 +130,7 @@
                                        <div>Student {{  i.admin.id }}</div>
                                     </td>
                                     <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
-                                    <td>{{ i.gender }}</td>
+                                    <td>{{ i.gender|title }}</td>
                                      <td>{{ i.admin.email }}</td>
                                  </tr>
                                {% endfor %}

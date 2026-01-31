@@ -87,9 +87,8 @@ def student_view_result(request):
         assignment_marks = i.assignment_marks
         exam_marks = i.exam_mark
         mark = assignment_marks + exam_marks
-        if mark >= 90:
-            ...
     context = {
         'result': result,
+        'mark': mark,
     }
     return render(request, 'STUDENT/view_result.html', context)

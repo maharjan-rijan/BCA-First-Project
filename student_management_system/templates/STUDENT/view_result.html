@@ -39,7 +39,7 @@
                                        <td>{{ i.assignment_marks }}</td>
                                        <td>{{ i.exam_mark }}</td>
                                        <td class="text-right">
-                                            {% if i.status == 'Pass' %}
+                                            {% if mark >= 40 %}
                                             <span class="badge badge-success">Pass</span>
                                             {% else %}
                                             <span class="badge badge-danger">Fail</span>
