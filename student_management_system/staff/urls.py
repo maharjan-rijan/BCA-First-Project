@@ -12,6 +12,7 @@ urlpatterns = [
     path("feedback/save",staff_feedback_save, name="staff_feedback_save"), # type: ignore
     
     path("add-result",staff_add_result, name='staff_add_result'),
+    path("save-result",staff_save_result, name='staff_save_result'),
     
     path("take-attendance",staff_take_attendance, name="staff_take_attendance"),
     path("save-attendance",staff_save_attendance, name="staff_save_attendance"), # type: ignore

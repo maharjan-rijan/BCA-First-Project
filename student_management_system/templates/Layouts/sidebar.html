@@ -62,6 +62,7 @@
                            <li><a href="{% url 'student_leave_view' %}"> Student Leave</a></li>
                         </ul>
                      </li>
+                     <li><a href="{% url 'view_student_result' %}"><i class="fas fa-book-open"></i><span> Result</span></a></li>
                      <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><span> Logout</span></a></li>
                   </ul>
                   {% elif user.user_type == '2' %}
@@ -90,6 +91,7 @@
                   <ul>
                      <li class="{% active_link 'student_home' 'active' %}"><a href="{% url 'student_home' %}"><i class="fas fa-graduation-cap"></i><span> Dashboard</span></a></li>
                      <li class="{% active_link 'student_notification' 'active' %}"><a href="{% url 'student_notification' %}"><i class="fas fa-bell"></i><span> Notification</span></a></li>
+                     <li class="{% active_link 'student_view_result' 'active' %}"><a href="{% url 'student_view_result' %}"><i class="fas fa-book-open"></i><span> View Result</span></a></li>
                      <li class="{% active_link 'student_feedback' 'active' %}"><a href="{% url 'student_feedback' %}"><i class="fas fa-comment-alt"></i><span> Send Feedback</span></a></li>
                      <li class="{% active_link 'student_apply_leave' 'active' %}"><a href="{% url 'student_apply_leave' %}"><i class="fas fa-pray"></i><span> Apply for Leave</span></a></li>
                      <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><span> Logout</span></a></li>

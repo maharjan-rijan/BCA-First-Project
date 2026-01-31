@@ -1,0 +1,62 @@
+@startuml
+title Student Management System - Object Diagram
+
+'========================
+' User Objects
+'========================
+object admin1 {
+  user_type = "Admin"
+  username = "admin"
+}
+
+object staff1 {
+  user_type = "Staff"
+  username = "staff01"
+}
+
+object student1 {
+  user_type = "Student"
+  username = "student01"
+}
+
+'========================
+' Course & Subject Objects
+'========================
+object courseObj {
+  name = "BSc CSIT"
+  course_code = "CSIT01"
+}
+
+object subjectObj {
+  name = "Database Systems"
+  subject_code = "DBMS101"
+}
+
+'========================
+' Student Object
+'========================
+object studentObj {
+  name = "Rijan Maharjan"
+  gender = "Male"
+}
+
+'========================
+' Staff Object
+'========================
+object staffObj {
+  name = "Ram Shrestha"
+}
+
+'========================
+' Result Object
+'========================
+object resultObj {
+  assignment_marks = 25
+  exam_marks = 60
+  grade = "A"
+}
+
+'========================
+' Attendance Object
+'========================
+object atten

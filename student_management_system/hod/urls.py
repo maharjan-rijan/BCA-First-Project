@@ -1,7 +1,10 @@
 from django.urls import path
 from .views import *
 urlpatterns = [
+path("autocomplete/", autocomplete_name, name="autocomplete_studentName"),
 path("home", home, name='hod_home'),
+path("student/result/view", view_student_result, name='view_student_result'),
+
 path("student/add", add_student, name='hod_add_student'),
 path("student/view", view_student, name='hod_view_student'),
 path("student/edit/<str:id>", edit_student, name='hod_edit_student'),
@@ -51,4 +54,5 @@ path("staff/feedback_save",staff_feedback_save, name="staff_feedback_reply_save"
 
 path("student/feedback",student_feedback, name="student_feedback_reply"),
 path("student/feedback_save",student_feedback_save, name="student_feedback_reply_save"), # type: ignore
+
     ]

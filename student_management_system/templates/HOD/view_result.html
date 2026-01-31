@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block title %} View Result {% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">View Result</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'staff_home' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Result</li>
+                <li class="breadcrumb-item active">View Result</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="card">
+<div class="card-body">
+
+{% if action is none %}
+<form method="post" action="?action=show=Students">
+{% csrf_token %}
+
+<div class="row">
+<div class="col-12">
+    <h5 class="form-title"><span>View Result</span></h5>
+    {% include 'layouts/messages.html' %}
+</div>
+
+<!-- Student Name -->
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Student Name</label>
+        <input type="text"
+               class="form-control"
+               id="student_name"
+               autocomplete="off"
+               placeholder="Type student name...">
+
+        <!-- hidden student id -->
+        <input type="hidden" name="student_id" id="student_id">
+
+        <ul id="suggestions" class="list-group"></ul>
+    </div>
+</div>
+
+<!-- Session Year -->
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Session Year</label>
+        <select class="form-control" name="session_year_id">
+            <option value="">Select Session Year</option>
+            {% for i in session_year %}
+            <option value="{{ i.id }}">
+                {{ i.session_start }} - {{ i.session_end }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="col-12">
+    <button type="submit" class="btn btn-primary">Fetch Student</button>
+</div>
+</div>
+</form>
+
+{% else %}
+
+<!-- ADD RESULT FORM (unchanged logic) -->
+<form method="post">
+{% csrf_token %}
+
+<div class="row">
+<div class="col-12">
+    <h5 class="form-title"><span>Add Result</span></h5>
+    {% include 'layouts/messages.html' %}
+</div>
+
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Subject</label>
+        <select class="form-control">
+            <option value="{{ get_subject.id }}">{{ get_subject }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Staff</label>
+        <select class="form-control">
+            <option value="{{ get_session.id }}">{{ get_session }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="form-group">
+        <label>Student List</label>
+        <select class="form-control" name="student_id">
+            {% for i in students %}
+            <option value="{{ i.admin.id }}">
+                ID{{ i.id }} : {{ i.admin.first_name }} {{ i.admin.last_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Assignment Marks</label>
+        <input type="text" class="form-control" name="assignment_marks">
+    </div>
+</div>
+
+<div class="col-12 col-sm-6">
+    <div class="form-group">
+        <label>Exam Marks</label>
+        <input type="text" class="form-control" name="exam_mark">
+    </div>
+</div>
+
+<div class="col-12">
+    <button type="submit" class="btn btn-primary">Add Result</button>
+</div>
+</div>
+</form>
+{% endif %}
+
+</div>
+</div>
+</div>
+</div>
+
+<!-- AUTOCOMPLETE SCRIPT -->
+<script>
+const input = document.getElementById("student_name");
+const suggestions = document.getElementById("suggestions");
+const studentIdField = document.getElementById("student_id");
+
+input.addEventListener("keyup", function () {
+    const query = this.value.trim();
+
+    if (query.length < 1) {
+        suggestions.innerHTML = "";
+        return;
+    }
+
+    fetch(`/autocomplete/?q=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            suggestions.innerHTML = "";
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.className = "list-group-item list-group-item-action";
+                li.textContent = item.name;
+
+                li.onclick = () => {
+                    input.value = item.name;
+                    studentIdField.value = item.id; // store student id
+                    suggestions.innerHTML = "";
+                };
+
+                suggestions.appendChild(li);
+            });
+        });
+});
+</script>
+{% endblock %}

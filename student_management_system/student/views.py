@@ -78,3 +78,18 @@ def student_apply_leave_save(request):
         return redirect('student_apply_leave')
     return render(request, 'STUDENT/apply_leave.html')
 
+@login_required(login_url='/')
+def student_view_result(request):
+    mark = 0
+    student = Student.objects.get(admin=request.user.id)
+    result = Student_Result.objects.filter(student_id=student)
+    for i in result:
+        assignment_marks = i.assignment_marks
+        exam_marks = i.exam_mark
+        mark = assignment_marks + exam_marks
+        if mark >= 90:
+            ...
+    context = {
+        'result': result,
+    }
+    return render(request, 'STUDENT/view_result.html', context)

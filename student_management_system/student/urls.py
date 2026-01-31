@@ -11,4 +11,6 @@ urlpatterns = [
 
     path("apply_leave",student_apply_leave, name="student_apply_leave"),
     path("apply_leave_save",student_apply_leave_save, name="student_apply_leave_save"),
+    
+    path("view_result",student_view_result, name="student_view_result"),
 ]

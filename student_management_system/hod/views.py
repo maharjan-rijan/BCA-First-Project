@@ -1,7 +1,22 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from main.models import *
+# ===================================Recommendation Algorithm==================================== #
+def autocomplete_name(request):
+    # Placeholder for recommendation algorithm logic
+    query = request.GET.get('q', '')
+    students = Student.objects.filter(Q(admin__first_name__icontains=query) | Q(admin__last_name__icontains=query))[0:10]
+    results = [
+        f"{st.admin.first_name} {st.admin.last_name}" for st in students
+    ]
+    return JsonResponse([
+    {"id": st.id, "name": f"{st.first_name} {st.last_name}"}
+    for st in students
+], safe=False)
+
 
 @login_required(login_url='/')
 def home(request):
@@ -539,4 +554,11 @@ def student_feedback_save(request):
         feedback.status = 1
         feedback.save()
         return redirect('student_feedback_reply')
-   
+
+# ===================================Result==================================== #
+@login_required(login_url='/')
+def view_student_result(request):
+    student = Student.objects.all()
+    session_year = Session_year.objects.all()
+    context = {'student':student, 'session_year':session_year}
+    return render(request, 'HOD/view_result.html', context)

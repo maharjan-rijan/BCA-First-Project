@@ -1,0 +1,126 @@
+@startuml
+title Student Management System - Refined Class Diagram 
+'========================
+' Base User Class
+'========================
+class CustomUser {
+  +id: bigint
+  +username: String
+  +password: String
+  +first_name: String
+  +last_name: String
+  +email: String
+  +user_type: String
+  +is_staff: boolean
+  +is_superuser: boolean
+  +is_active: boolean
+  +last_login: datetime
+  +date_joined: datetime
+  +profile_pic: String
+}
+
+'========================
+' Student Class
+'========================
+class Student {
+  +id: bigint
+  +address: String
+  +gender: String
+  +date_of_birth: Date
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Staff Class
+'========================
+class Staff {
+  +id: bigint
+  +address: String
+  +gender: String
+  +date_of_birth: Date
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Course Class
+'========================
+class Course {
+  +id: bigint
+  +name: String
+  +short_name: String
+  +course_code: String
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Subject Class
+'========================
+class Subject {
+  +id: bigint
+  +name: String
+  +subject_code: String
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Session Year
+'========================
+class SessionYear {
+  +id: bigint
+  +session_start: String
+  +session_end: String
+}
+
+'========================
+' Student Result
+'========================
+class StudentResult {
+  +id: bigint
+  +assignment_marks: double
+  +exam_marks: double
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Attendance
+'========================
+class Attendance {
+  +id: bigint
+  +attendance_date: Date
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+class AttendanceReport {
+  +id: bigint
+  +created_date: datetime
+  +updated_date: datetime
+}
+
+'========================
+' Inheritance
+'========================
+CustomUser <|-- Student
+CustomUser <|-- Staff
+
+'========================
+' Associations
+'========================
+Course "1" -- "*" Subject
+Course "1" -- "*" Student
+SessionYear "1" -- "*" Student
+
+Student "1" -- "*" StudentResult
+Subject "1" -- "*" StudentResult
+
+Staff "1" -- "*" Subject
+
+Attendance "1" -- "*" AttendanceReport
+Student "1" -- "*" AttendanceReport
+
+@enduml

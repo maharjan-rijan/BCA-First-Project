@@ -12,10 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
-os.environ["DEBUG"] = "False"
-
 from dotenv import load_dotenv
 load_dotenv()
+
+os.environ["DEBUG"] = "False"
+
 env_path = Path('config') / '.env'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,12 +84,15 @@ WSGI_APPLICATION = "student_management_system.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR/ 'student_management_system_db.sqlite3',
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'student_management_system',
+        'USER': 'root',
+        'PASSWORD': 'maharjan@123#rijan',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
-
 
 
 # Password validation

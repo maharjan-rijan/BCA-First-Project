@@ -68,7 +68,7 @@ class Staff(models.Model):
         return self.admin.username
 
 class Subject(models.Model):
-    objects = None # type: ignore
+    objects = None
     name = models.CharField(max_length= 100)
     subject_code = models.CharField(max_length= 100, unique=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
