@@ -32,7 +32,7 @@
                                        <th>Course</th>
                                        <th>Gender</th>
                                        <th>Address</th>
-                                       <th>Session Year</th>
+                                       <th>Academic Year</th>
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
@@ -50,7 +50,7 @@
                                        <td>{{ st.course_id.short_name }}</td>
                                        <td>{{ st.gender|title }}</td>
                                        <td>{{ st.address }}</td>
-                                       <td>{{ st.session_year_id.session_start }} to {{ st.session_year_id.session_end }}</td>
+                                       <td>{{ st.academic_year }}</td>
                                        <td class="text-right">
                                           <div class="actions">
                                              <a href="{% url 'hod_edit_student' st.id %}" class="btn btn-sm bg-success-light mr-2">

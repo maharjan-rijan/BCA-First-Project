@@ -1,59 +1,67 @@
-{% extends 'base.html' %}
-{% block title %} View Course {% endblock %}
-{% block content %}
-{% load static %}
-                  <div class="page-header">
-                  <div class="row align-items-center">
-                     <div class="col">
-                        <h3 class="page-title">Course</h3>
-                        <ul class="breadcrumb">
-                           <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Courses</li>
-                        </ul>
-                     </div>
-                     <div class="col-auto text-right float-right ml-auto">
-                       <a href="{% url 'hod_add_course' %}" class="btn btn-primary">Add Course</a>
-                     </div>
+{% extends 'base.html' %} {% block title %} View Course {% endblock %} 
+{% block content %} {% load static %}
+<div class="page-header">
+  <div class="row align-items-center">
+    <div class="col">
+      <h3 class="page-title">Course</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'hod_home' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Courses</li>
+      </ul>
+    </div>
+    <div class="col-auto text-right float-right ml-auto">
+      <a href="{% url 'hod_add_course' %}" class="btn btn-primary"
+        >Add Course</a
+      >
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    {% include 'layouts/messages.html' %}
+    <div class="card card-table">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-center mb-0" id="table_id">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cor in course %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cor.course_code }}</td>
+                <td>{{ cor.name }}&#32; &#40;{{cor.short_name}}&#41;</td>
+                <td class="text-right">
+                  <div class="actions">
+                    <a
+                      href="{% url 'hod_edit_course' cor.id %}"
+                      class="btn btn-sm bg-success-light mr-2"
+                    >
+                      <i class="fas fa-pen"></i>
+                    </a>
+                    <a
+                      href="{% url 'hod_delete_course' cor.id %}"
+                      class="btn btn-sm bg-success-light mr-2"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </a>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="col-sm-12">
-                     {% include 'layouts/messages.html' %}
-                     <div class="card card-table">
-                        <div class="card-body">
-                           <div class="table-responsive">
-                              <table class="table table-hover table-center mb-0" id="table_id" >
-                                 <thead>
-                                    <tr>
-                                       <th>ID</th>
-                                       <th>Course Code</th>
-                                       <th>Course Title</th>
-                                       <th class="text-right">Action</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    {% for cor in course %}
-                                    <tr>
-                                       <td>{{ forloop.counter }}</td>
-                                       <td>{{ cor.course_code }}</td>
-                                       <td>{{ cor.name }}&#32; &#40;{{cor.short_name}}&#41;</td>
-                                       <td class="text-right">
-                                          <div class="actions">
-                                             <a href="{% url 'hod_edit_course' cor.id %}" class="btn btn-sm bg-success-light mr-2">
-                                                 <i class="fas fa-pen"></i>
-                                             </a>
-                                              <a href="{% url 'hod_delete_course' cor.id %}" class="btn btn-sm bg-success-light mr-2">
-                                                 <i class="fas fa-trash"></i>
-                                             </a>
-                                         </div>
-                                       </td>
-                                    </tr>
-                                    {% endfor %}
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
- {% endblock %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

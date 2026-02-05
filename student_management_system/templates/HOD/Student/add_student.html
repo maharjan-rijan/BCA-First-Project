@@ -94,7 +94,15 @@
                 <input type="password" class="form-control" name="password" />
               </div>
             </div>
-            <div class="col-12 col-sm-12">
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <div class="form-group">
+                  <label>Academic Year</label>
+                  <input type="text" class="form-control" name="academic_year" />
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
               <div class="form-group">
                 <label>Courses</label>
                 <select class="form-control" name="course_id">
@@ -102,19 +110,6 @@
                   {% for i in course %}
                   <option value="{{ i.id }}">
                     {{ i.name }}&#32; &#40;{{i.short_name}}&#41;
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12">
-              <div class="form-group">
-                <label>Session Year</label>
-                <select class="form-control" name="session_year_id">
-                  <option value="">Select Year</option>
-                  {% for i in session_year %}
-                  <option value="{{ i.id }}">
-                    {{ i.session_start }} to {{ i.session_end }}
                   </option>
                   {% endfor %}
                 </select>

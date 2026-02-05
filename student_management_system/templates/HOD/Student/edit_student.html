@@ -98,13 +98,8 @@
                                  </div>
                                   <div class="col-12 col-sm-12">
                                     <div class="form-group">
-                                       <label>Session Year</label>
-                                       <select class="form-control" name="session_year_id">
-                                          <option value="">Select Session Year</option>
-                                          {% for i in session_year %}
-                                          <option value="{{ i.id }}"{% if student.session_year_id.id == i.id %}selected{%endif%}>{{ i.session_start }} to {{ i.session_end }}</option>
-                                           {% endfor %}
-                                       </select>
+                                       <label>Academic Year</label>
+                                       <input type="text" class="form-control" name="academic_year" value="{{ student.academic_year }}">
                                     </div>
                                  </div>
                                  <div class="col-12">

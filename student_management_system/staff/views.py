@@ -82,158 +82,179 @@ def staff_feedback_save(request):
 def staff_add_result(request):
     staff = Staff.objects.get(admin=request.user.id)
     subject = Subject.objects.filter(staff_id = staff)
-    session_year = Session_year.objects.all()
+    academic_years = Student.objects.values_list('academic_year', flat=True).distinct()
     action = request.GET.get('action')
     get_subject = None
-    get_session_year = None
-    students = None
+    get_academic_year = None
+    students = Student.objects.none()
     
-    if action is not None:
-        if request.method == "POST":
-            subject_id = request.POST.get('subject_id')
-            session_year_id = request.POST.get('session_year_id')
+    if action and request.method == "POST":
+        subject_id = request.POST.get('subject_id')
+        get_academic_year = request.POST.get('academic_year')
             
+        if subject_id and get_academic_year:
             get_subject = Subject.objects.get(id=subject_id)
-            get_session_year = Session_year.objects.get(id=session_year_id)
-            
-            subjects = Subject.objects.filter(id=subject_id)
-            for i in subjects:
-                student_id = i.course.id
-                students = Student.objects.filter(course_id=student_id)
+            students = Student.objects.select_related('admin').filter(course_id=get_subject.course_id, academic_year=get_academic_year)
     context = {
         'subject': subject,
-        'session_year': session_year,
         'action': action,
         'get_subject': get_subject,
-        'get_session': get_session_year,
+        'get_academic_year': get_academic_year,
+        'academic_years': academic_years,
         'students': students,
     }   
     return render(request,'Staff/add_result.html', context)
 
 @login_required(login_url='/')
 def staff_save_result(request):
-    if request.method == "POST":
-        subject_id = request.POST.get('subject_id')
-        student_id = request.POST.get('student_id')
-        assignment_marks = request.POST.get('assignment_marks')
-        exam_mark = request.POST.get('exam_mark')
+    if request.method != "POST":
+        return redirect('staff_add_result')
 
-        get_student = Student.objects.get(admin=int(student_id))
-        get_subject = Subject.objects.get(id=subject_id)  
-              
-        check_exists = Student_Result.objects.filter(subject_id=get_subject, student_id=get_student).exists()
-        if check_exists:
-            result = Student_Result.objects.get(subject_id=get_subject, student_id=get_student)
-            result.assignment_marks = assignment_marks
-            result.exam_mark = exam_mark
-            result.save()
-            messages.success(request, "Result updated successfully")
-            return redirect('staff_add_result')
-        else:
-            result = Student_Result(
-                student_id = get_student,
-                subject_id = get_subject,
-                assignment_marks = assignment_marks,
-                exam_mark = exam_mark,
-            )
-            result.save()
-            messages.success(request, "Result added successfully")
-            return redirect('staff_add_result')
+    subject_id = request.POST.get('subject_id')
+    student_id = request.POST.get('student_id')
+
+    assignment_mark = request.POST.get('assignment_mark', 0)
+    attendance_mark = request.POST.get('attendance_mark', 0)
+    exam_mark = request.POST.get('exam_mark', 0)
+
+    if not student_id or not subject_id:
+        messages.error(request, "Invalid student or subject selection.")
+        return redirect('staff_add_result')
+
+    try:
+        get_student = Student.objects.get(id=int(student_id))
+        get_subject = Subject.objects.get(id=int(subject_id))
+    except (Student.DoesNotExist, Subject.DoesNotExist, ValueError):
+        messages.error(request, "Selected student or subject does not exist.")
+        return redirect('staff_add_result')
+
+    result, created = Student_Result.objects.update_or_create(
+        student_id=get_student,
+        subject_id=get_subject,
+        defaults={
+            'assignment_mark': float(assignment_mark),
+            'attendance_mark': float(attendance_mark),
+            'exam_mark': float(exam_mark),
+        }
+    )
+
+    if created:
+        messages.success(request, "Result added successfully")
+    else:
+        messages.success(request, "Result updated successfully")
+
+    return redirect('staff_add_result')
+
         
 
 @login_required(login_url='/')
 def staff_take_attendance(request):
     staff_id = Staff.objects.get(admin = request.user.id)
     subject = Subject.objects.filter(staff = staff_id)
-    session_year = Session_year.objects.all()
+    academic_years = Student.objects.values_list('academic_year', flat=True).distinct()
     action = request.GET.get('action')
     
     get_subject = None
-    get_session_year = None
+    get_academic_year = None
     students = None
     
     if action is not None:
         if request.method == "POST":
             subject_id = request.POST.get('subject_id')
-            session_year_id = request.POST.get('session_year_id')
+            get_academic_year = request.POST.get('academic_year')
             
-            get_subject = Subject.objects.get(id = subject_id)
-            get_session_year = Session_year.objects.get(id = session_year_id)
-            
-            subjects = Subject.objects.filter(id = subject_id)
-            for i in subjects:
-                student_id = i.course.id
-                students = Student.objects.filter(course_id=student_id)
+            if subject_id and get_academic_year:
+                get_subject = Subject.objects.get(id = subject_id)
+                students = Student.objects.filter(course_id = get_subject.course_id, academic_year=get_academic_year)
     context = {
         'subject': subject,
-        'session_year': session_year,
         'action': action,
         'get_subject': get_subject,
-        'get_session': get_session_year,
+        'get_academic_year': get_academic_year,
+        'academic_years': academic_years,
         'students': students,
     }   
     return render(request, 'Staff/take_attendance.html', context)
 
 @login_required(login_url='/')
 def staff_save_attendance(request):
-    if request.method == "POST":
-        subject_id = request.POST.get('subject_id')
-        session_year_id = request.POST.get('session_year_id')
-        attendance_date = request.POST.get('attendance_date')
-        student_id = request.POST.getlist('student_id')
-        
-        get_subject = Subject.objects.get(id=subject_id)
-        get_session_year = Session_year.objects.get(id=session_year_id)
-        
-        attendance = Attendance(
-            subject_id = get_subject,
-            attendance_date = attendance_date,
-            session_year_id = get_session_year
+    if request.method != "POST":
+        return redirect('staff_take_attendance')
+
+    subject_id = request.POST.get('subject_id')
+    attendance_date = request.POST.get('attendance_date')
+    student_ids = request.POST.getlist('student_id')
+
+    if not subject_id or not attendance_date:
+        messages.error(request, "Subject and date are required")
+        return redirect('staff_take_attendance')
+
+    try:
+        subject = Subject.objects.get(id=int(subject_id))
+    except Subject.DoesNotExist:
+        messages.error(request, "Subject not found")
+        return redirect('staff_take_attendance')
+
+    attendance, created = Attendance.objects.get_or_create(
+        subject_id=subject,
+        attendance_date=attendance_date
+    )
+
+    for stud_id in student_ids:
+        try:
+            student = Student.objects.get(id=int(stud_id))
+        except Student.DoesNotExist:
+            continue
+
+        AtendanceReport.objects.get_or_create(
+            student_id=student,
+            attendance_id=attendance,
         )
-        attendance.save()
-        for i in student_id:
-            stud_id = i
-            int_stud = int(stud_id)
-            
-            p_students = Student.objects.get(id = int_stud)
-            attendance_report = AtendanceReport(
-                student_id = p_students,
-                attendance_id = attendance,
-            )
-            attendance_report.save()
-            return redirect('staff_take_attendance')     
+
+    messages.success(request, "Attendance saved successfully")
+    return redirect('staff_take_attendance')
+ 
         
 @login_required(login_url='/')
 def staff_view_attendance(request):
-    staff_id = Staff.objects.get(admin = request.user.id)
-    subject = Subject.objects.filter(staff = staff_id)
-    session_year = Session_year.objects.all()
+    staff_id = Staff.objects.get(admin=request.user.id)
+    subjects = Subject.objects.filter(staff=staff_id)
+    academic_years = Student.objects.values_list('academic_year', flat=True).distinct()
     
     action = request.GET.get('action')
+    
     get_subject = None
-    get_session_year = None
-    attendance_date = None
-    attendance_report = None
+    get_academic_year = None
+    students = None
+    attendance_records = None
     
     if action is not None:
         if request.method == "POST":
             subject_id = request.POST.get('subject_id')
-            session_year_id = request.POST.get('session_year_id')
-            attendance_date = request.POST.get('attendance_date')
+            get_academic_year = request.POST.get('academic_year')
             
-            get_subject = Subject.objects.get(id = subject_id)
-            get_session_year = Session_year.objects.get(id = session_year_id)
-            attendance = Attendance.objects.filter(subject_id = get_subject, attendance_date = attendance_date)
-            for i in attendance:
-                attendance_id = i.id
-                attendance_report = AtendanceReport.objects.filter(attendance_id = attendance_id)
+            if subject_id and get_academic_year:
+                get_subject = Subject.objects.get(id=subject_id)
+                
+                # Get students of that course and academic year
+                students = Student.objects.filter(
+                    course_id=get_subject.course_id,
+                    academic_year=get_academic_year
+                )
+                
+                attendance_records = Attendance.objects.filter(
+                    subject_id=get_subject.id,
+                    student_id=students
+                ).order_by('date')
+    
     context = {
-        'subject': subject,
-        'session_year': session_year,
+        'subjects': subjects,
         'action': action,
         'get_subject': get_subject,
-        'get_session': get_session_year,
-        'attendance_date': attendance_date, 
-        'attendance_report': attendance_report,
-    }   
-    return render(request, 'Staff/view_attendance.html', context)    
+        'get_academic_year': get_academic_year,
+        'academic_years': academic_years,
+        'students': students,
+        'attendance_records': attendance_records,
+    }
+    
+    return render(request, 'Staff/view_attendance.html', context)

@@ -1,54 +1,82 @@
-{% extends 'base.html' %}
-{% block title %} Edit Course {% endblock %}
+{% extends 'base.html' %} {% block title %} Edit Course {% endblock %} 
 {% block content %}
-              <div class="page-header">
-                  <div class="row align-items-center">
-                     <div class="col">
-                        <h3 class="page-title">Edit Course</h3>
-                        <ul class="breadcrumb">
-                           <li class="breadcrumb-item"><a href="{% url 'hod_view_course' %}">Course</a></li>
-                           <li class="breadcrumb-item active">Edit Course</li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
+<div class="page-header">
+  <div class="row align-items-center">
+    <div class="col">
+      <h3 class="page-title">Edit Course</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'hod_view_course' %}">Course</a>
+        </li>
+        <li class="breadcrumb-item active">Edit Course</li>
+      </ul>
+    </div>
+  </div>
+</div>
 {% include 'layouts/messages.html' %}
-               <div class="row">
-                  <div class="col-sm-12">
-                     <div class="card">
-                        <div class="card-body">
-                           <form method="post" action="{% url 'hod_update_course' %}" enctype="multipart/form-data">
-                              {% csrf_token %}
-                              <div class="row">
-                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Courses</span></h5>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Course Code</label>
-                                       <input type="text" class="form-control" name="course_code" value="{{ course.course_code }}">
-                                       <input type="text" class="form-control" name="course_id" value="{{ course.id }}" hidden>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Course Title</label>
-                                       <input type="text" class="form-control" name="course_name" value="{{ course.name }}">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Short Name</label>
-                                       <input type="text" class="form-control" name="short_name" value="{{ course.short_name }}">
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Update Course</button>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <form
+          method="post"
+          action="{% url 'hod_update_course' %}"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-12">
+              <h5 class="form-title"><span>Courses</span></h5>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label>Course Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="course_code"
+                  value="{{ course.course_code }}"
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="course_id"
+                  value="{{ course.id }}"
+                  hidden
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label>Course Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="course_name"
+                  value="{{ course.name }}"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label>Short Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="short_name"
+                  value="{{ course.short_name }}"
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">
+                Update Course
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

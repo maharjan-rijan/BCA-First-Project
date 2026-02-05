@@ -29,11 +29,6 @@ path("subject/edit/<str:id>",edit_subject, name='hod_edit_subject'),
 path("subject/update",update_subject, name='hod_update_subject'),  # type: ignore
 path("subject/delete/<str:id>",delete_subject, name='hod_delete_subject'),
 
-path("session/add",add_session, name='hod_add_session'),
-path("session/view",view_session, name='hod_view_session'),
-path("session/edit/<str:id>",edit_session, name='hod_edit_session'),
-path("session/update",update_session, name='hod_update_session'),  # type: ignore
-path("session/delete/<str:id>",delete_session, name='hod_delete_session'),
 
 path("staff/send_notification",staff_send_notification, name='staff_send_notification'),
 path("staff/save_notification",staff_save_notification, name="staff_save_notification"),  # type: ignore

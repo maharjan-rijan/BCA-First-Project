@@ -8,12 +8,10 @@ def date_of_birth_validate(Student):
     if Student.date_of_birth < datetime.date.today():
         raise ValidationError("Date Must Be future.")
 
-def session_validate(Session_year):
-    if Session_year.session_start <= Session_year.session_end:
-        raise ValidationError("End date must be after start date.")
-    
-    if Session_year.session_end - Session_year.session_start < timedelta(days = 365):
-        raise ValidationError("Start date must be at least 1 year before the end date.")
+def academic_year_validate(Student):
+    current_year = datetime.date.today().year
+    if Student.academic_year < str(current_year) or Student.academic_year > str(current_year + 1):
+        raise ValidationError("Academic year must be current year or next year.")
 
 def attendance_validate(Attendance):
     if Attendance.attendance_date != datetime.date.today():
@@ -38,19 +36,13 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
-class Session_year(models.Model):
-    session_start = models.CharField(max_length= 100)
-    session_end = models.CharField(max_length= 100)
-    def __str__(self):
-        return self.session_start + " to " + self.session_end
-
 class Student(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length= 100)
     gender = models.CharField(max_length= 100)
     date_of_birth = models.DateField(null=True, validators=[date_of_birth_validate])
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
-    session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
+    academic_year = models.TextField(validators=[academic_year_validate])
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -143,7 +135,8 @@ class Student_feedback(models.Model):
 class Student_Result(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    assignment_marks = models.FloatField(default=0)
+    assignment_mark = models.FloatField(default=0)
+    attendance_mark = models.FloatField(default=0)
     exam_mark = models.FloatField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -154,7 +147,6 @@ class Student_Result(models.Model):
 class Attendance(models.Model):
     subject_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
     attendance_date = models.DateField(validators=[attendance_validate])
-    session_year_id = models.ForeignKey(Session_year, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
         

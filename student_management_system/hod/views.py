@@ -41,8 +41,6 @@ def home(request):
 @login_required(login_url='/')
 def add_student(request):
     course = Course.objects.all()
-    session_year = Session_year.objects.all()
-
     if request.method == "POST":
         profile_pic = request.FILES.get('profile_pic')
         first_name = request.POST.get('first_name')
@@ -50,11 +48,11 @@ def add_student(request):
         gender = request.POST.get('gender')
         address = request.POST.get('address')
         date_of_birth = request.POST.get('date_of_birth')
+        academic_year = request.POST.get('academic_year')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
         course_id = request.POST.get('course_id')
-        session_year_id = request.POST.get('session_year_id')
 
         if CustomUser.objects.filter(email=email).exists():
             messages.warning(request, 'Email already registered.')
@@ -76,13 +74,12 @@ def add_student(request):
             user.save()
 
             course = Course.objects.get(id=course_id)
-            session_year = Session_year.objects.get(id=session_year_id)
 
             student = Student(
                 admin=user,
                 address=address,
                 date_of_birth = date_of_birth,
-                session_year_id=session_year,
+                academic_year = academic_year,
                 course_id=course,
                 gender=gender
             )
@@ -90,7 +87,7 @@ def add_student(request):
             messages.success(request, user.first_name + " " + user.last_name +' Added Successfully')
             return redirect('hod_view_student')
 
-    context = {'course':course,'session_year':session_year}
+    context = {'course':course}
     return render(request,'HOD/Student/add_student.html', context)
 
 @login_required(login_url='/')
@@ -103,8 +100,7 @@ def view_student(request):
 def edit_student(request,id):
     student = Student.objects.get(id=id)
     course = Course.objects.all()
-    session_year = Session_year.objects.all()
-    context = {'student':student,'course':course, 'session_year':session_year}
+    context = {'student':student,'course':course}
     return render(request,'HOD/Student/edit_student.html',context)
 
 @login_required(login_url='/')
@@ -117,11 +113,11 @@ def update_student(request):
         gender = request.POST.get('gender')
         address = request.POST.get('address')
         date_of_birth = request.POST.get('date_of_birth')
+        academic_year = request.POST.get('academic_year')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
         course_id = request.POST.get('course_id')
-        session_year_id = request.POST.get('session_year_id')
 
         user = CustomUser.objects.get(id=student_id)
         user.first_name = first_name
@@ -138,13 +134,11 @@ def update_student(request):
         student = Student.objects.get(admin=student_id)
         student.address=address
         student.date_of_birth=date_of_birth
+        student.academic_year=academic_year
         student.gender=gender
 
         course  = Course.objects.get(id=course_id)
         student.course_id=course
-
-        session_year = Session_year.objects.get(id=session_year_id)
-        student.session_year_id=session_year
 
         student.save()
         messages.success(request, user.first_name + " " + user.last_name +' Records are Updated Successfully')
@@ -383,57 +377,6 @@ def delete_subject(request, id):
     messages.warning(request, 'Subject is Deleted Successfully.')
     return redirect('hod_view_subject')
 
-# ===================================Session==================================== #
-
-@login_required(login_url='/')
-def add_session(request):
-    if request.method == "POST":
-        session_year_start = request.POST.get('session_year_start')
-        session_year_end = request.POST.get('session_year_end')
-
-        session = Session_year(
-            session_start=session_year_start,
-            session_end=session_year_end,
-        )
-        session.save()
-        messages.success(request, 'Session is Added Successfully.')
-        return redirect('hod_view_session')
-    return render(request, 'HOD/Session/add_session.html')
-
-@login_required(login_url='/')
-def view_session(request):
-    session = Session_year.objects.all()
-    context = {'session':session}
-    return render(request, 'HOD/Session/view_session.html',context)
-
-@login_required(login_url='/')
-def edit_session(request, id):
-    session = Session_year.objects.filter(id=id)
-    context = {'session':session}
-    return render(request, 'HOD/Session/edit_session.html',context)
-
-@login_required(login_url='/') # type: ignore
-def update_session(request):
-    if request.method == "POST":
-        session_id = request.POST.get('session_id')
-        session_year_start = request.POST.get('session_year_start')
-        session_year_end = request.POST.get('session_year_end')
-
-        session= Session_year(
-            id=session_id,
-            session_start=session_year_start,
-            session_end=session_year_end,
-        )
-        session.save()
-        messages.success(request, 'Session is Updated Successfully.')
-        return redirect('hod_view_session')
-
-@login_required(login_url='/')
-def delete_session(request, id):
-    session = Session_year.objects.get(id=id)
-    session.delete()
-    messages.success(request, 'Session is Deleted Successfully.')
-    return redirect('hod_view_session')
 
 @login_required(login_url='/')
 def staff_send_notification(request):
@@ -558,7 +501,26 @@ def student_feedback_save(request):
 # ===================================Result==================================== #
 @login_required(login_url='/')
 def view_student_result(request):
-    student = Student.objects.all()
-    session_year = Session_year.objects.all()
-    context = {'student':student, 'session_year':session_year}
-    return render(request, 'HOD/view_result.html', context)
+    students = Student.objects.all()
+    action = request.GET.get("action")
+
+    if request.method == "POST":
+        student_id = request.POST.get("student_id")
+
+        if not student_id:
+            messages.error(request, "Please select a student")
+            return redirect("hod_view_result")
+
+        result = Student_Result.objects.filter(
+            student_id__admin__id=student_id
+        )
+
+        return render(request, "hod/view_result.html", {
+            "action": "show",
+            "result": result
+        })
+
+    return render(request, "hod/view_result.html", {
+        "students": students,
+        "action": None
+    })

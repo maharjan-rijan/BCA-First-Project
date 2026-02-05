@@ -1,69 +1,81 @@
-{% extends 'base.html' %}
-{% block title %} View Staff {% endblock %}
-{% load static %}
+{% extends 'base.html' %} {% block title %} View Staff {% endblock %} 
+{% load static %} 
 {% block content %}
-                  <div class="page-header">
-                  <div class="row align-items-center">
-                     <div class="col">
-                        <h3 class="page-title">Staffs</h3>
-                        <ul class="breadcrumb">
-                           <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Staffs</li>
-                        </ul>
-                     </div>
-                     <div class="col-auto text-right float-right ml-auto">
-                        <a href="{% url 'hod_add_staff' %}" class="btn btn-primary">Add Staff</a>
-                     </div>
+<div class="page-header">
+  <div class="row align-items-center">
+    <div class="col">
+      <h3 class="page-title">Staffs</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'hod_home' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Staffs</li>
+      </ul>
+    </div>
+    <div class="col-auto text-right float-right ml-auto">
+      <a href="{% url 'hod_add_staff' %}" class="btn btn-primary">Add Staff</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    {% include 'layouts/messages.html' %}
+    <div class="card card-table">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-center mb-0" id="table_id">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in staff %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <h2 class="table-avatar">
+                    <a href="#" class="avatar avatar-sm mr-2"
+                      ><img
+                        class="avatar-img rounded-circle"
+                        src="/{{ i.admin.profile_pic }}"
+                        alt="User Image"
+                    /></a>
+                  </h2>
+                </td>
+                <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
+                <td>{{ i.admin.email }}</td>
+                <td>{{ i.gender|title }}</td>
+                <td>{{ i.address }}</td>
+                <td class="text-right">
+                  <div class="actions">
+                    <a
+                      href="{% url 'hod_edit_staff' i.id %}"
+                      class="btn btn-sm bg-success-light mr-2"
+                    >
+                      <i class="fas fa-pen"></i>
+                    </a>
+                    <a
+                      href="{% url 'hod_delete_staff' i.admin.id %}"
+                      class="btn btn-sm bg-success-light mr-2"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </a>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="col-sm-12">
-                     {% include 'layouts/messages.html' %}
-                     <div class="card card-table">
-                        <div class="card-body">
-                           <div class="table-responsive">
-                              <table class="table table-hover table-center mb-0" id="table_id">
-                                 <thead>
-                                    <tr>
-                                       <th>ID</th>
-                                       <th>Photo</th>
-                                       <th>Name</th>
-                                       <th>Email</th>
-                                       <th>Gender</th>
-                                       <th>Address</th>
-                                       <th class="text-right">Action</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    {% for i in staff %}
-                                    <tr>
-                                       <td>{{ forloop.counter }}</td>
-                                       <td>
-                                          <h2 class="table-avatar">
-                                             <a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/{{ i.admin.profile_pic }}" alt="User Image"></a>
-                                          </h2>
-                                       </td>
-                                       <td>{{ i.admin.first_name }}&nbsp;{{ i.admin.last_name}}</td>
-                                       <td>{{ i.admin.email }}</td>
-                                       <td>{{ i.gender|title }}</td>
-                                       <td>{{ i.address }}</td>
-                                       <td class="text-right">
-                                          <div class="actions">
-                                             <a href="{% url 'hod_edit_staff' i.id %}" class="btn btn-sm bg-success-light mr-2">
-                                                 <i class="fas fa-pen"></i>
-                                             </a>
-                                              <a href="{% url 'hod_delete_staff' i.admin.id %}" class="btn btn-sm bg-success-light mr-2">
-                                                 <i class="fas fa-trash"></i>
-                                             </a>
-                                         </div>
-                                       </td>
-                                    </tr>
-                                    {% endfor %}
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
- {% endblock %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

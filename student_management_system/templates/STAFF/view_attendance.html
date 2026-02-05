@@ -32,7 +32,7 @@
                                        <label>Subject</label>
                                        <select class="form-control" name="subject_id">
                                         <option value="">Select Subject</option>
-                                         {% for i in subject %}
+                                         {% for i in subjects %}
                                           <option value="{{ i.id }}">{{ i.name }}</option>
                                           {% endfor %}
                                        </select>
@@ -40,11 +40,11 @@
                                  </div>
                                   <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Session Year</label>
-                                       <select class="form-control" name="session_year_id">
-                                        <option value="">Select Session Year</option>
-                                         {% for i in session_year %}
-                                          <option value="{{ i.id }}">{{ i.session_start }} to {{ i.session_end }}</option>
+                                       <label>Academic Year</label>
+                                       <select class="form-control" name="academic_year">
+                                        <option value="">Select Academic Year</option>
+                                         {% for year in academic_years %}
+                                          <option value="{{ year }}">{{ year }}</option>
                                            {% endfor %}
                                        </select> 
                                     </div>
@@ -98,9 +98,9 @@
                                  </div>
                                   <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Session Year</label>
-                                       <select class="form-control" name="session_year_id" disabled>
-                                        <option value="{{ get_session.id }}">{{ get_session.session_start }} to {{ get_session.session_end }}</option>
+                                       <label>Academic Year</label>
+                                       <select class="form-control" name="academic_year" disabled>
+                                        <option value="{{ get_academic_year.academic_year }}">{{ get_academic_year }}</option>
                                        </select> 
                                     </div>
                                  </div>
