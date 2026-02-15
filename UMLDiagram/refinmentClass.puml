@@ -1,0 +1,103 @@
+@startuml
+title Refined Class Diagram - Student Result Management & Prediction System
+
+'================= INHERITANCE =================
+class User {
+  +id : Long
+  +username : String
+  +password : String
+  +email : String
+  +first_name : String
+  +last_name : String
+  +date_joined : DateTime
+  +login()
+  +logout()
+}
+
+class Admin {
+  +addStudent()
+  +addStaff()
+  +addCourse()
+  +addSubject()
+  +publishResult()
+  +predictStudentResult()
+}
+
+class Staff {
+  +address : String
+  +gender : String
+  +date_of_birth : Date
+  +enterMarks()
+  +takeAttendance()
+}
+
+class Student {
+  +address : String
+  +gender : String
+  +date_of_birth : Date
+  +academic_year : String
+  +viewResult()
+}
+
+User <|-- Admin
+User <|-- Staff
+User <|-- Student
+
+'================= ACADEMIC STRUCTURE =================
+class Course {
+  +course_id : Long
+  +name : String
+  +short_name : String
+  +course_code : String
+  +addCourse()
+  +updateCourse()
+}
+
+class Subject {
+  +subject_id : Long
+  +name : String
+  +subject_code : String
+  +assignStaff()
+}
+
+Course "1" -- "*" Subject
+Course "1" -- "*" Student
+Staff "1" -- "*" Subject
+
+'================= ATTENDANCE =================
+class Attendance {
+  +attendance_id : Long
+  +attendance_date : Date
+  +markAttendance()
+}
+
+class AttendanceReport {
+  +report_id : Long
+  +status : Boolean
+}
+
+Attendance "1" -- "*" AttendanceReport
+Student "1" -- "*" AttendanceReport
+Subject "1" -- "*" Attendance
+
+'================= RESULT & PREDICTION =================
+class StudentResult {
+  +assignment_mark : Double
+  +attendance_mark : Double
+  +exam_mark : Double
+  +final_result : Double
+  +calculateFinalResult()
+}
+
+class PredictionModel {
+  +trainModel()
+  +predictResult()
+}
+
+Student "1" -- "*" StudentResult
+Subject "1" -- "*" StudentResult
+StudentResult --> PredictionModel : uses
+
+Admin --> PredictionModel : runs
+
+@enduml

@@ -116,6 +116,7 @@ def staff_save_result(request):
     assignment_mark = request.POST.get('assignment_mark', 0)
     attendance_mark = request.POST.get('attendance_mark', 0)
     exam_mark = request.POST.get('exam_mark', 0)
+    final_result = float(assignment_mark) + float(attendance_mark) + float(exam_mark)
 
     if not student_id or not subject_id:
         messages.error(request, "Invalid student or subject selection.")
@@ -135,6 +136,7 @@ def staff_save_result(request):
             'assignment_mark': float(assignment_mark),
             'attendance_mark': float(attendance_mark),
             'exam_mark': float(exam_mark),
+            'final_result': final_result,
         }
     )
 
@@ -174,7 +176,7 @@ def staff_take_attendance(request):
         'academic_years': academic_years,
         'students': students,
     }   
-    return render(request, 'Staff/take_attendance.html', context)
+    return render(request, 'Staff/Attendance/take_attendance.html', context)
 
 @login_required(login_url='/')
 def staff_save_attendance(request):
@@ -257,4 +259,4 @@ def staff_view_attendance(request):
         'attendance_records': attendance_records,
     }
     
-    return render(request, 'Staff/view_attendance.html', context)
+    return render(request, 'Staff/Attendance/view_attendance.html', context)

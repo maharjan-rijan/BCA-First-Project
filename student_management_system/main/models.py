@@ -138,6 +138,7 @@ class Student_Result(models.Model):
     assignment_mark = models.FloatField(default=0)
     attendance_mark = models.FloatField(default=0)
     exam_mark = models.FloatField(default=0)
+    final_result = models.FloatField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

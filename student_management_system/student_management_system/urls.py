@@ -36,5 +36,8 @@ urlpatterns = [
     path("staff/", include('staff.urls')),
     path("student/", include('student.urls')),
     
+    #Result Prediction
+    path("prediction/", include('prediction.urls')),
+    
     
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

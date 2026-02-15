@@ -1,0 +1,30 @@
+@startuml
+title Sequence Diagram - Generate Result and Prediction
+
+actor Admin
+actor Staff
+participant "System" as System
+participant "Student" as Student
+participant "Database" as DB
+
+Admin -> System : Login()
+System -> DB : verifyCredentials()
+DB --> System : success
+
+Staff -> System : Enter Attendance()
+System -> DB : saveAttendance()
+
+Staff -> System : Enter Marks()
+System -> DB : saveMarks()
+
+Admin -> System : Generate Result()
+System -> DB : fetchMarksAndAttendance()
+DB --> System : data
+
+System -> System : calculateFinalResult()
+System -> System : predictPerformance()
+
+System -> Student : Publish Result()
+Student -> System : View Result()
+
+@enduml

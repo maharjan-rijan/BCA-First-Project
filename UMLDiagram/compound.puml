@@ -1,0 +1,59 @@
+@startuml
+title Student Result Management & Prediction - Component Diagram
+
+skinparam componentStyle rectangle
+
+' ===== User Interface =====
+component "Web / Mobile UI" as UI {
+  [User Input]
+  [Result Output]
+}
+
+' ===== Core Result System =====
+component "Student Result Management System" as RMS {
+  [Student Module]
+  [Course & Subject Module]
+  [Marks Entry]
+  [Result Generation]
+}
+
+' ===== Data Processing =====
+component "Data Preprocessing" as DP {
+  [Cleaning]
+  [Normalization]
+}
+
+component "Feature Engineering" as FE {
+  [Feature Extraction]
+  [Data Transformation]
+}
+
+' ===== Prediction System =====
+component "Prediction Engine" as PE {
+  [Train Model]
+  [Predict Result]
+}
+
+component "Machine Learning Model" as ML {
+  [Train]
+  [Predict Probability]
+  [Predict Final Grade]
+}
+
+' ===== Database =====
+component "Database" as DB
+
+' ===== Connections =====
+UI --> RMS : Manage Students / Courses / Marks
+RMS --> DB : Store & Retrieve Data
+
+RMS --> DP : Send Result Data
+DP --> FE : Process Data
+FE --> ML : Feature Vectors
+
+ML --> PE : Model Output
+PE --> UI : Predicted Result
+
+ML --> DB : Training Dataset
+
+@enduml

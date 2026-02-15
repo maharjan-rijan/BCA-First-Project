@@ -1,0 +1,23 @@
+@startuml
+title State Diagram - Student Result Predicting System
+
+[*] --> Admin_Login
+
+Admin_Login --> Add_Student : Admin adds student
+Add_Student --> Add_Staff : Admin adds staff
+Add_Staff --> Add_Course : Admin adds course
+Add_Course --> Add_Subject : Admin adds subject
+
+Add_Subject --> Enrollment_Process : Enroll staff & student
+Enrollment_Process --> Teaching_In_Progress : semester starts
+
+Teaching_In_Progress --> Staff_Add_Result : staff enters marks
+Staff_Add_Result --> Result_Published : publish results
+
+Result_Published --> Admin_Select_Student : admin selects student
+Admin_Select_Student --> Predict_Result : run prediction model
+Predict_Result --> Prediction_Shown
+
+Prediction_Shown --> [*]
+
+@enduml

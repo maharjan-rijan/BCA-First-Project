@@ -14,29 +14,46 @@
       rel="shortcut icon"
       href="{% static 'assets/img/Logos/scholarlyfavicon.png' %}"
     />
+
     <!-- Google Fonts -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&display=swap"
     />
+
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="{% static 'assets/plugins/Styles/css/style.min.css' %}"
     />
-    <!-- Font Awesome CSS -->
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}"
-    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}"
     />
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/login.css' %}" />
+
+    <!-- Inline CSS for eye icon -->
+    <style>
+      .password-wrapper {
+        position: relative;
+      }
+
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+      }
+    </style>
   </head>
+
   <body>
     <div class="main-wrapper login-body">
       <div class="login-wrapper">
@@ -49,37 +66,50 @@
                 alt="Logo"
               />
             </div>
+
             <div class="login-right">
               <div class="login-right-wrap">
                 <h1>Login</h1>
                 <p class="account-subtitle">Access to our dashboard</p>
-                <!-- Error and success messages -->
+
+                <!-- Messages -->
                 {% include "layouts/messages.html" %}
+
                 <!-- Login Form -->
                 <form action="{% url 'doLogin' %}" method="post">
                   {% csrf_token %}
+
                   <div class="form-group">
                     <input
                       class="form-control"
                       type="email"
                       name="email"
                       placeholder="Email"
+                      required
                     />
                   </div>
-                  <div class="form-group">
+
+                  <div class="form-group password-wrapper">
                     <input
                       class="form-control"
                       type="password"
+                      id="password"
                       name="password"
                       placeholder="Password"
+                      required
                     />
+                    <span class="toggle-password" onclick="togglePassword()">
+                      <i id="eyeIcon" class="fa fa-eye"></i>
+                    </span>
                   </div>
+
                   <div class="form-group">
                     <button class="btn btn-primary btn-block" type="submit">
                       Login
                     </button>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
@@ -87,12 +117,26 @@
       </div>
     </div>
 
-    <!-- jQuery -->
+    <!-- JS -->
     <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
-    <!-- Bootstrap Core JS -->
     <script src="{% static 'assets/js/popper.min.js' %}"></script>
     <script src="{% static 'assets/plugins/Styles/js/bootstrap.min.js' %}"></script>
-    <!-- Custom JS -->
     <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <!-- Password Toggle Script -->
+    <script>
+      function togglePassword() {
+        const password = document.getElementById("password");
+        const icon = document.getElementById("eyeIcon");
+
+        if (password.type === "password") {
+          password.type = "text";
+          icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          password.type = "password";
+          icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      }
+    </script>
   </body>
 </html>

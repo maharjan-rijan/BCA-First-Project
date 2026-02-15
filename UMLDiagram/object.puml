@@ -1,0 +1,49 @@
+@startuml
+title Object Diagram Snapshot
+
+object course1 {
+  id = 1
+  name = "BSc CSIT"
+  course_code = "CSIT"
+}
+
+object staff1 {
+  id = 5
+  name = "Mr. Sharma"
+}
+
+object subject1 {
+  id = 10
+  name = "Database"
+}
+
+object student1 {
+  id = 20
+  name = "Rijan"
+}
+
+object attendance1 {
+  id = 100
+  date = "2026-02-06"
+}
+
+object attendanceReport1
+
+object result1 {
+  assignment = 18
+  exam = 55
+  attendance = 10
+  final = 83
+}
+
+' Links between objects
+course1 -- subject1
+course1 -- student1
+staff1 -- subject1
+subject1 -- attendance1
+student1 -- attendanceReport1
+attendance1 -- attendanceReport1
+student1 -- result1
+subject1 -- result1
+
+@enduml

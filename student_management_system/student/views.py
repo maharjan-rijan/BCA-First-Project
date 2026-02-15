@@ -84,9 +84,9 @@ def student_view_result(request):
     student = Student.objects.get(admin=request.user.id)
     result = Student_Result.objects.filter(student_id=student)
     for i in result:
-        assignment_marks = i.assignment_marks
-        exam_marks = i.exam_mark
-        mark = assignment_marks + exam_marks
+        assignment_mark = i.assignment_mark
+        exam_mark = i.exam_mark
+        mark = assignment_mark + exam_mark
     context = {
         'result': result,
         'mark': mark,

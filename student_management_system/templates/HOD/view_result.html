@@ -61,22 +61,24 @@ static %} {% block content %}
                     class="table table-hover table-center mb-0"
                   >
                     <thead>
-                      <tr>
+                      <tr class="text-center">
                         <th>ID</th>
                         <th>Subject Name</th>
                         <th>Assignment Marks</th>
                         <th>Attendance Marks</th>
                         <th>Exam Marks</th>
+                        <th>Final Result</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for i in result %}
-                      <tr>
+                      <tr class="text-center">
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ i.subject_id.name }}</td>
+                        <td class="text-wrap">{{ i.subject_id.name }}</td>
                         <td>{{ i.assignment_mark }}</td>
                         <td>{{ i.attendance_mark }}</td>
                         <td>{{ i.exam_mark }}</td>
+                        <td class="font-weight-bold">{{ i.final_result }}</td>
                       </tr>
                       {% endfor %}
                     </tbody>

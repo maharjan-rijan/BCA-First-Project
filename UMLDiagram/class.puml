@@ -1,0 +1,92 @@
+@startuml
+title Student Result Management System - Class Diagram
+
+class Course {
+  id : Long
+  name : String
+  short_name : String
+  course_code : String
+  created_date : DateTime
+  updated_date : DateTime
+}
+
+class Subject {
+  id : Long
+  name : String
+  subject_code : String
+  created_date : DateTime
+  updated_date : DateTime
+}
+
+class Student {
+  id : Long
+  address : String
+  gender : String
+  date_of_birth : Date
+  academic_year : String
+  created_date : DateTime
+  updated_date : DateTime
+}
+
+class Staff {
+  id : Long
+  address : String
+  gender : String
+  date_of_birth : Date
+  created_date : DateTime
+  updated_date : DateTime
+}
+
+class User {
+  id : Long
+  username : String
+  password : String
+  email : String
+  first_name : String
+  last_name : String
+  is_superuser : Boolean
+  is_staff : Boolean
+  is_active : Boolean
+  date_joined : DateTime
+  user_type : String
+  profile_pic : String
+}
+
+class Attendance {
+  id : Long
+  attendance_date : Date
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+class AttendanceReport {
+  id : Long
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+class StudentResult {
+  id : Long
+  assignment_mark : Double
+  attendance_mark : Double
+  exam_mark : Double
+  final_result : Double
+  created_date : DateTime
+  updated_date : DateTime
+}
+
+' Relationships
+Course "1" -- "*" Subject
+Course "1" -- "*" Student
+Staff "1" -- "*" Subject
+User "1" -- "*" Staff : admin
+User "1" -- "*" Student : admin
+
+Subject "1" -- "*" Attendance
+Attendance "1" -- "*" AttendanceReport
+Student "1" -- "*" AttendanceReport
+
+Student "1" -- "*" StudentResult
+Subject "1" -- "*" StudentResult
+
+@enduml

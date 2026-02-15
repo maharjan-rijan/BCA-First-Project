@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     "hod",
     "staff",
     "student",
-    "active_link"
+    "active_link",
+    "prediction",
 ]
 
 MIDDLEWARE = [
