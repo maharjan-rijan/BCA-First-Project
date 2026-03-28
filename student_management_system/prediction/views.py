@@ -1,35 +1,49 @@
-import os
-import joblib
-import numpy as np
-from main.models import Student_Result
 from django.shortcuts import render
-from django.conf import settings
+from django.http import JsonResponse
+from main.models import Student, Student_Result, Predicted_Result
+from prediction.ml_model import predict_and_store
 
-# Create your views here.
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'ml', 'performance_model.pkl')
-model = joblib.load(MODEL_PATH)
+def view_result(request):
+    """Display student result table and predicted results"""
+    action = request.GET.get('action', None)
+    students = Student.objects.all()
+    result = []
+    student_id = None
+
+    if action == "show=Students" and request.method == "POST":
+        student_id = request.POST.get("student_id")
+        result = Student_Result.objects.filter(student_id__id=student_id)
+
+    context = {
+        'students': students,
+        'result': result,
+        'action': action,
+        'student_id': student_id
+    }
+    return render(request, "view_result.html", context)
+
+
 def predict_student_result(request):
-    if request.method == 'POST':
-        # Get input data from the form
-        attendance = float(request.POST.get('attendance', 0))
-        assignment_mark = float(request.POST.get('assignment_mark', 0))
-        exam_mark = float(request.POST.get('exam_mark', 0))
+    """Trigger prediction and store in DB"""
+    student_id = request.GET.get("student_id")
+    if not student_id:
+        return JsonResponse({"error": "Student not selected"})
 
-        # Prepare the input data for prediction
-        input_data = np.array([[attendance, assignment_mark, exam_mark]])
+    predictions = predict_and_store(student_id)
+    if not predictions:
+        return JsonResponse({"error": "Not enough data to predict"})
 
-        # Make the prediction using the loaded model
-        predicted_result = model.predict(input_data)[0]
+    return JsonResponse({"success": True})
 
-        # Save the result to the database
-        Student_Result.objects.create(
-            student_id=request.user.student,
-            attendance=attendance,
-            assignment_mark=assignment_mark,
-            exam_mark=exam_mark,
-            final_result=predicted_result
-        )
 
-        return render(request, 'result_predict.html', {'predicted_result': predicted_result})
+def get_saved_predictions(request):
+    """Fetch predictions from DB for a student"""
+    student_id = request.GET.get("student_id")
+    predictions = Predicted_Result.objects.filter(student__id=student_id)
 
-    return render(request, 'result_predict.html')
+    data = [
+        {"subject": p.subject.name, "predicted_score": p.predicted_score, "average_percentage": p.average_percentage}
+        for p in predictions
+    ]
+
+    return JsonResponse({"predictions": data})

@@ -35,6 +35,6 @@ model = LinearRegression()
 model.fit(X, y)
 
 # 🔹 Save trained model
-joblib.dump(model, 'ml/performance_model.pkl')
+joblib.dump(model, 'prediction/performance_model.pkl')
 
 print("Model trained using database data")

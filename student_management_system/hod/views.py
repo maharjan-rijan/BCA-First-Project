@@ -517,10 +517,13 @@ def view_student_result(request):
 
         return render(request, "hod/view_result.html", {
             "action": "show",
-            "result": result
+            "result": result,
+            "student_id": student_id
         })
 
     return render(request, "hod/view_result.html", {
         "students": students,
         "action": None
     })
+    
+    

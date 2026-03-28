@@ -1,5 +1,6 @@
-{% extends 'base.html' %} {% block title %} View Result {% endblock %} {% load
-static %} {% block content %}
+{% extends 'base.html' %} {% block title %} View Result {% endblock %} 
+{% block content %}
+
 <div class="page-header">
   <div class="row align-items-center">
     <div class="col">
@@ -13,89 +14,133 @@ static %} {% block content %}
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="col-sm-12">
     <div class="card">
       <div class="card-body">
         {% if action is none %}
-        <form
-          method="post"
-          action="?action=show=Students"
-          enctype="multipart/form-data"
-        >
-          {% csrf_token %}
-          <div class="row">
-            <div class="col-12">
-              <h5 class="form-title"><span>View Result</span></h5>
-              {% include 'layouts/messages.html' %}
-            </div>
-            <div class="col-12 col-sm-12">
-              <div class="form-group">
-                <label>Students Name</label>
-                <select class="form-control" name="student_id">
-                  <option value="">Select Student</option>
-                  {% for i in students %}
-                  <option value="{{ i.admin.id }}">
-                    {{ i.admin.first_name }}&nbsp;{{ i.admin.last_name }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
 
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">
-                Fetch Student
-              </button>
-            </div>
+        <!-- Student Select -->
+        <form method="post" action="?action=show=Students">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Students Name</label>
+            <select class="form-control" name="student_id" required>
+              <option value="">Select Student</option>
+              {% for i in students %}
+              <option value="{{ i.id }}">
+                {{ i.admin.first_name }} {{ i.admin.last_name }}
+              </option>
+              {% endfor %}
+            </select>
           </div>
+
+          <button type="submit" class="btn btn-primary">Fetch Student</button>
         </form>
+
         {% else %}
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="card card-table">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table
-                    id="table_id"
-                    class="table table-hover table-center mb-0"
-                  >
-                    <thead>
-                      <tr class="text-center">
-                        <th>ID</th>
-                        <th>Subject Name</th>
-                        <th>Assignment Marks</th>
-                        <th>Attendance Marks</th>
-                        <th>Exam Marks</th>
-                        <th>Final Result</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for i in result %}
-                      <tr class="text-center">
-                        <td>{{ forloop.counter }}</td>
-                        <td class="text-wrap">{{ i.subject_id.name }}</td>
-                        <td>{{ i.assignment_mark }}</td>
-                        <td>{{ i.attendance_mark }}</td>
-                        <td>{{ i.exam_mark }}</td>
-                        <td class="font-weight-bold">{{ i.final_result }}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
+
+        <div class="table-responsive">
+          <table id="table_id" class="table table-hover text-center">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Subject</th>
+                <th>Assignment</th>
+                <th>Attendance</th>
+                <th>Exam</th>
+                <th>Final</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in result %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.subject_id.name }}</td>
+                <td>{{ i.assignment_mark }}</td>
+                <td>{{ i.attendance_mark }}</td>
+                <td>{{ i.exam_mark }}</td>
+                <td><b>{{ i.final_result }}</b></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6">No data available</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Hidden Student ID -->
+        <input type="hidden" id="student_id" value="{{ student_id }}" />
+
+        <!-- ================= PREDICT BUTTON ================= -->
+        <div class="text-center mt-4">
+          <button onclick="predictResult()" class="btn btn-success btn-lg">
+            Predict Result
+          </button>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="text-success">Predicted Results</h4>
               </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col text-center">
-                <a href="#" class="btn btn-primary btn-lg"> Predict Result </a>
+              <div class="card-body">
+                <table class="table table-bordered text-center">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Subject</th>
+                      <th>Predicted Score</th>
+                      <th>Average Result in Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody id="predictionTableBody">
+                    <tr>
+                      <td colspan="4">No prediction yet</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
+
         {% endif %}
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function predictResult() {
+    let student_id = document.getElementById("student_id").value;
+
+    fetch(
+      `{% url 'prediction:predict_student_result' %}?student_id=${student_id}`,
+    )
+      .then((res) => res.json())
+      .then(() => {
+        return fetch(
+          `{% url 'prediction:get_saved_predictions' %}?student_id=${student_id}`,
+        );
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        let tbody = document.getElementById("predictionTableBody");
+        tbody.innerHTML = "";
+        if (!data.predictions.length) {
+          tbody.innerHTML = `<tr><td colspan="4">No prediction available</td></tr>`;
+          return;
+        }
+        data.predictions.forEach((p, idx) => {
+          tbody.innerHTML += `<tr><td>${idx + 1}</td><td>${p.subject}</td><td>${p.predicted_score}</td><td>${p.average_percentage}</td></tr>`;
+        });
+      });
+  }
+</script>
+
 {% endblock %}
