@@ -1,10 +1,12 @@
-{% extends 'base.html' %} {% block title %} View Result {% endblock %} 
+{% extends 'base.html' %}
+{% block title %} Predict Result {% endblock %}
+
 {% block content %}
 
 <div class="page-header">
   <div class="row align-items-center">
     <div class="col">
-      <h3 class="page-title">View Result</h3>
+      <h3 class="page-title">Predict Result</h3>
       <ul class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="{% url 'hod_home' %}">Dashboard</a>
@@ -19,31 +21,34 @@
   <div class="col-sm-12">
     <div class="card">
       <div class="card-body">
-        {% if action is none %}
 
-        <!-- Student Select -->
-        <form method="post" action="?action=show=Students">
+        <!-- 🔽 Student Selection -->
+        <form method="post">
           {% csrf_token %}
           <div class="form-group">
-            <label>Students Name</label>
+            <label>Select Student</label>
             <select class="form-control" name="student_id" required>
-              <option value="">Select Student</option>
+              <option value="">-- Select Student --</option>
               {% for i in students %}
-              <option value="{{ i.id }}">
+              <option value="{{ i.id }}"
+                {% if student_id == i.id|stringformat:"s" %}selected{% endif %}>
                 {{ i.admin.first_name }} {{ i.admin.last_name }}
               </option>
               {% endfor %}
             </select>
           </div>
 
-          <button type="submit" class="btn btn-primary">Fetch Student</button>
+          <button type="submit" class="btn btn-primary">
+            Fetch Result
+          </button>
         </form>
 
-        {% else %}
+        <hr>
 
+        <!-- 🔽 Result Table -->
         <div class="table-responsive">
-          <table id="table_id" class="table table-hover text-center">
-            <thead>
+          <table class="table table-hover text-center">
+            <thead class="thead-dark">
               <tr>
                 <th>ID</th>
                 <th>Subject</th>
@@ -53,94 +58,102 @@
                 <th>Final</th>
               </tr>
             </thead>
-            <tbody>
-              {% for i in result %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ i.subject_id.name }}</td>
-                <td>{{ i.assignment_mark }}</td>
-                <td>{{ i.attendance_mark }}</td>
-                <td>{{ i.exam_mark }}</td>
-                <td><b>{{ i.final_result }}</b></td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="6">No data available</td>
-              </tr>
-              {% endfor %}
+
+            <tbody id="resultTableBody">
+              {% if result %}
+                {% for i in result %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ i.subject_id.name }}</td>
+                  <td>{{ i.assignment_mark }}</td>
+                  <td>{{ i.attendance_mark }}</td>
+                  <td>{{ i.exam_mark }}</td>
+                  <td><b>{{ i.final_result }}</b></td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6">No data available</td>
+                </tr>
+              {% endif %}
             </tbody>
+
           </table>
         </div>
-
-        <!-- Hidden Student ID -->
-        <input type="hidden" id="student_id" value="{{ student_id }}" />
-
-        <!-- ================= PREDICT BUTTON ================= -->
-        <div class="text-center mt-4">
-          <button onclick="predictResult()" class="btn btn-success btn-lg">
-            Predict Result
-          </button>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                <h4 class="text-success">Predicted Results</h4>
-              </div>
-              <div class="card-body">
-                <table class="table table-bordered text-center">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Subject</th>
-                      <th>Predicted Score</th>
-                      <th>Average Result in Percentage</th>
-                    </tr>
-                  </thead>
-                  <tbody id="predictionTableBody">
-                    <tr>
-                      <td colspan="4">No prediction yet</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {% endif %}
+<button id="predictBtn" class="btn btn-success mt-2" disabled>
+      Predict Result
+    </button>
       </div>
+    </div>
+
+    <!-- 🔮 Predict Button -->
+    
+
+  </div>
+</div>
+
+<!-- 📊 Prediction Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Prediction Result</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body text-center">
+        <h3 id="predictedScore"></h3>
+        <h4 id="percentage"></h4>
+      </div>
+
     </div>
   </div>
 </div>
 
+<!-- 🔧 Scripts -->
 <script>
-  function predictResult() {
-    let student_id = document.getElementById("student_id").value;
+document.addEventListener("DOMContentLoaded", function () {
+    checkTableData();
 
-    fetch(
-      `{% url 'prediction:predict_student_result' %}?student_id=${student_id}`,
-    )
-      .then((res) => res.json())
-      .then(() => {
-        return fetch(
-          `{% url 'prediction:get_saved_predictions' %}?student_id=${student_id}`,
-        );
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        let tbody = document.getElementById("predictionTableBody");
-        tbody.innerHTML = "";
-        if (!data.predictions.length) {
-          tbody.innerHTML = `<tr><td colspan="4">No prediction available</td></tr>`;
-          return;
+    document.getElementById("predictBtn").addEventListener("click", predictResult);
+});
+
+function checkTableData() {
+    let rows = document.querySelectorAll("#resultTableBody tr");
+
+    if (rows.length === 1 && rows[0].innerText.includes("No data")) {
+        document.getElementById("predictBtn").disabled = true;
+    } else {
+        document.getElementById("predictBtn").disabled = false;
+    }
+}
+
+function predictResult() {
+    let studentId = document.querySelector("select[name='student_id']").value;
+
+    if (!studentId) {
+        alert("Please select a student first!");
+        return;
+    }
+
+    fetch("{% url 'predict_result' %}?student_id=" + studentId)
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            document.getElementById("predictedScore").innerText =
+                "Predicted Score: " + data.predicted_score;
+
+            document.getElementById("percentage").innerText =
+                "Percentage: " + data.percentage + "%";
+
+            $('#resultModal').modal('show');
         }
-        data.predictions.forEach((p, idx) => {
-          tbody.innerHTML += `<tr><td>${idx + 1}</td><td>${p.subject}</td><td>${p.predicted_score}</td><td>${p.average_percentage}</td></tr>`;
-        });
-      });
-  }
+    })
+    .catch(error => console.error(error));
+}
 </script>
 
 {% endblock %}

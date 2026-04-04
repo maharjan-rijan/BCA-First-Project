@@ -502,28 +502,18 @@ def student_feedback_save(request):
 @login_required(login_url='/')
 def view_student_result(request):
     students = Student.objects.all()
-    action = request.GET.get("action")
+    result = None
+    student_id = None
 
     if request.method == "POST":
         student_id = request.POST.get("student_id")
 
-        if not student_id:
-            messages.error(request, "Please select a student")
-            return redirect("hod_view_result")
-
-        result = Student_Result.objects.filter(
-            student_id__admin__id=student_id
-        )
-
-        return render(request, "hod/view_result.html", {
-            "action": "show",
-            "result": result,
-            "student_id": student_id
-        })
+        if student_id:
+            result = Student_Result.objects.filter(student_id=student_id)
 
     return render(request, "hod/view_result.html", {
         "students": students,
-        "action": None
+        "result": result,
+        "student_id": student_id
     })
-    
     

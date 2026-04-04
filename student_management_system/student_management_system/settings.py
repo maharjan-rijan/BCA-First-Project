@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "staff",
     "student",
     "active_link",
-    "prediction",
 ]
 
 MIDDLEWARE = [
@@ -86,12 +85,12 @@ WSGI_APPLICATION = "student_management_system.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'student_management_system',
-        'USER': 'root',
-        'PASSWORD': 'maharjan@123#rijan',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': os.getenv("ENGINE"),
+        'NAME': os.getenv("NAME"),
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASSWORD"),
+        'HOST': os.getenv("HOST"),
+        'PORT': os.getenv("PORT"),
     }
 }
 

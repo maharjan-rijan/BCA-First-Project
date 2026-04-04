@@ -37,7 +37,7 @@ urlpatterns = [
     path("student/", include('student.urls')),
     
     #Result Prediction
-    path("prediction/", include('prediction.urls')),
+    path("prediction/", include('ml_prediction.urls')),
     
     
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
