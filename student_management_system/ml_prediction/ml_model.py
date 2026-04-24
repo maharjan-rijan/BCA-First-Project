@@ -16,11 +16,9 @@ class LinearRegression:
         for _ in range(self.iterations):
             y_pred = np.dot(X, self.weights) + self.bias
 
-            # gradients
             dw = (1 / self.m) * np.dot(X.T, (y_pred - y))
             db = (1 / self.m) * np.sum(y_pred - y)
 
-            # update weights
             self.weights -= self.lr * dw
             self.bias -= self.lr * db
 
@@ -34,7 +32,6 @@ def predict_result(student_id):
     if not all_data.exists() or not student_data.exists():
         return None
 
-    # Training Data
     X = []
     y = []
     for row in all_data:
@@ -47,11 +44,9 @@ def predict_result(student_id):
     X = np.array(X, dtype=float)
     y = np.array(y, dtype=float)
 
-    # Train custom model
     model = LinearRegression()
     model.fit(X, y)
 
-    # Student Average Input
     exam = np.mean([i.exam_mark for i in student_data])
     assignment = np.mean([i.assignment_mark for i in student_data])
     attendance = np.mean([i.attendance_mark for i in student_data])
