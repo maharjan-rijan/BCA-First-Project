@@ -86,11 +86,11 @@ WSGI_APPLICATION = "student_management_system.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': os.getenv("ENGINE"),
-        'NAME': os.getenv("NAME"),
-        'USER': os.getenv("USER"),
-        'PASSWORD': os.getenv("PASSWORD"),
-        'HOST': os.getenv("HOST"),
-        'PORT': os.getenv("PORT"),
+        'NAME': os.getenv("Database_Name"),
+        'USER': os.getenv("UserName"),
+        'PASSWORD': os.getenv("Password"),
+        'HOST': os.getenv("Host"),
+        'PORT': os.getenv("Port"),
     }
 }
 
